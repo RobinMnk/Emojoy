@@ -1,11 +1,14 @@
 import React from 'react';
 import '../App.css';
-import { Icon, Menu, Layout } from 'antd';
+import { Icon, Menu, Layout, Typography } from 'antd';
+import { Info } from './Info';
 const { Sider, Content, Header } = Layout;
 const { SubMenu, Item } = Menu;
+const { Title } = Typography;
 
 interface IState {
     collapsed: boolean;
+    currentPage: string;
 }
 
 class App extends React.Component<{}, IState> {
@@ -13,6 +16,7 @@ class App extends React.Component<{}, IState> {
         super(props);
         this.state = {
             collapsed: false,
+            currentPage: 'info',
         };
     }
 
@@ -24,15 +28,20 @@ class App extends React.Component<{}, IState> {
 
     render() {
         return (
-            <Layout style={{height: '100vh'}}>
-                <Sider trigger={null} collapsible collapsed={this.state.collapsed}>
+            <Layout style={{ height: '100vh' }}>
+                <Sider collapsible collapsed={this.state.collapsed} onCollapse={this.toggle}>
                     <div className="logo" />
-                    <Menu theme="dark" mode="inline" defaultSelectedKeys={['0']}>
-                        <Item key="1">
+                    <Menu
+                        theme="dark"
+                        mode="inline"
+                        defaultSelectedKeys={[this.state.currentPage]}
+                        onSelect={vals => this.setState({ currentPage: vals.key })}
+                    >
+                        <Item key="info">
                             <Icon type="info-circle" />
                             <span>Information</span>
                         </Item>
-                        <Item key="2">
+                        <Item key="game">
                             <Icon type="user" />
                             <span>Play</span>
                         </Item>
@@ -44,15 +53,15 @@ class App extends React.Component<{}, IState> {
                                 </span>
                             }
                         >
-                            <Item key="p1">
-                                <Icon type="smile" />
+                            <Item key="practice1">
+                                <Icon type="frown" />
                                 <span>Scenario 1</span>
                             </Item>
-                            <Item key="p2">
-                                <Icon type="smile" />
+                            <Item key="practice2">
+                                <Icon type="meh" />
                                 <span>Scenario 2</span>
                             </Item>
-                            <Item key="p3">
+                            <Item key="practice3">
                                 <Icon type="smile" />
                                 <span>Scenario 3</span>
                             </Item>
@@ -61,11 +70,12 @@ class App extends React.Component<{}, IState> {
                 </Sider>
                 <Layout>
                     <Header style={{ background: '#fff', padding: 0 }}>
-                        <Icon
-                            className="trigger"
-                            type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'}
-                            onClick={this.toggle}
-                        />
+                        <span>
+                        </span><div style={{ justifyContent: 'space-around', display: 'flex' }}>
+                            <Title style={{margin: 0, marginTop: 8}}>
+                                Bananapp
+                            </Title>
+                        </div>
                     </Header>
                     <Content
                         style={{
@@ -75,11 +85,28 @@ class App extends React.Component<{}, IState> {
                             minHeight: 280,
                         }}
                     >
-                        Content
+                        {renderContent(this.state.currentPage)}
                 </Content>
                 </Layout>
             </Layout>
         );
+    }
+}
+
+
+const renderContent = (key: string) => {
+    console.log(key);
+    switch(key) {
+        case 'info':
+            return <Info />;
+        case 'game':
+            return <p> Not Implemented Yet </p>;
+        case 'practice1':
+            return <p> Not Implemented Yet, Practice Scenario 1 </p>;
+        case 'practice2':
+            return <p> Not Implemented Yet, Practice Scenario 2 </p>;
+        case 'practice3':
+            return <p> Not Implemented Yet, Practice Scenario 3 </p>;
     }
 }
 
