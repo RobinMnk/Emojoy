@@ -18,7 +18,7 @@ export class Info extends React.Component<IProps, {}> {
               padding: 24,
               background: '#fff',
               minHeight: 280,
-              fontSize: 80,
+              fontSize: 20,
               fontWeight: "bold"
           }}
         >
