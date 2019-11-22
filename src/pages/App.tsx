@@ -69,17 +69,9 @@ class App extends React.Component<{}, IState> {
                     </Menu>
                 </Sider>
                 <Layout>
-                    <Header style={{ background: '#fff', padding: 0 }}>
-                        <span>
-                        </span><div style={{ justifyContent: 'space-around', display: 'flex' }}>
-                            <Title style={{margin: 0, marginTop: 8}}>
-                                Bananapp
-                            </Title>
-                        </div>
-                    </Header>
                     <Content
                         style={{
-                            margin: '24px 16px',
+                            margin: '16px',
                             padding: 24,
                             background: '#fff',
                             minHeight: 280,
@@ -92,7 +84,6 @@ class App extends React.Component<{}, IState> {
         );
     }
 }
-
 
 const renderContent = (key: string) => {
     console.log(key);
