@@ -11,6 +11,17 @@ export class Info extends React.Component<IProps, {}> {
     }
 
     render() {
-        return ( <p> Title </p> );
+        return (
+        <div
+          style={{
+              margin: '24px 16px',
+              padding: 24,
+              background: '#fff',
+              minHeight: 280,
+          }}
+        >
+            Test Content
+        </div>
+        );
     }
 }
