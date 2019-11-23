@@ -44,7 +44,7 @@ class App extends React.Component<{}, IState> {
                 return <Info switchPage={p => this.switchPage(p)}/>;
             case 'pong':
                 return <Pong />;
-            case 'game':
+            case 'rps':
                 return <RockPaperScissors />;
             case 'practice1':
                 return (
