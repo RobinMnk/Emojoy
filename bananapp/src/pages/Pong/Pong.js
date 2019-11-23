@@ -4,7 +4,7 @@ import Ball from "./components/ball";
 import Board from "./components/board";
 import Waves from "./components/waves";
 import { Row, Col } from 'antd';
-import FaceAPI, { Emotion } from '../../components/faceapi';
+import FaceAPI from '../../components/faceapi';
 import "./Pong.css";
 
 class Pong extends Component {

@@ -32,9 +32,16 @@ interface IFaceAPIState {
 export default class FaceAPI extends Component<IProps, IFaceAPIState> {
     webcamId: string = "webcam";
     canvasId: string = "overlay";
+    mounted: boolean;
     constructor(props: Readonly<IProps>) {
         super(props);
-        this.state = { ready: false, started: false, running: false };
+        this.state = { ready: false, started: false, running: false};
+        this.mounted = true;
+    }
+
+    componentWillUnmount() {
+       this.mounted = false;
+       console.log("face api unmounted!");
     }
 
     async loadModel() {
@@ -77,7 +84,9 @@ export default class FaceAPI extends Component<IProps, IFaceAPIState> {
             }
             console.log(maxConfidenceEmotion);
         }
-        setTimeout(() => this.applyModel(videoElement, canvas), 50);
+        if(this.mounted) {
+            setTimeout(() => this.applyModel(videoElement, canvas), 50);
+        }
     }
 
     async startModel() {
@@ -91,15 +100,21 @@ export default class FaceAPI extends Component<IProps, IFaceAPIState> {
         await this.applyModel(videoElement, canvas);
     }
     async componentDidMount() {
-        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-        const video = document.getElementById(this.webcamId) as HTMLMediaElement;
-        video.srcObject = stream;
-        video.play()
-        if (!this.state.started) {
-            this.startModel();
+        if(this.mounted) {
+            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+            const video = document.getElementById(this.webcamId) as HTMLMediaElement;
+            video.srcObject = stream;
+            video.play()
+            if (!this.state.started) {
+                this.startModel();
+            }
         }
     }
     render() {
+        if(!this.mounted) {
+            return null;
+        }
+
         return <div style={this.props.noCenter ? {} : centerStyle} className={"webcam-component"}>
             <Row>
                 <video id={this.webcamId}></video>
