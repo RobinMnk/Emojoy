@@ -116,8 +116,9 @@ export class PracticeAdvanced extends React.Component<IProps, IState> {
         if(this.state.phase === 'info') {
             return (
                 <div>
-                    <Title>Emotion Change</Title>
-                    <p> Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gube ... </p>
+                    <Title>Transition Change</Title>
+                    {/* <p> Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gube ... </p> */}
+                    <p>  </p>
 
                     <div style={{ justifyContent: 'space-around', display: 'flex' }}>
                         <Button

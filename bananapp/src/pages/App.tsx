@@ -68,8 +68,12 @@ class App extends React.Component<{}, IState> {
     render() {
         return (
             <Layout style={{ height: '100vh' }}>
-                <Sider collapsible={false} collapsed={this.state.collapsed} onCollapse={this.toggle}>
-                    <div className="logo" />
+                <Sider
+                    collapsible={false}
+                    collapsed={this.state.collapsed}
+                    onCollapse={this.toggle}
+                    width={168}
+                >
                     <Menu
                         theme="dark"
                         mode="inline"
