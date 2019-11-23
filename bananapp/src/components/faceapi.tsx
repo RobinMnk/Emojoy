@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Webcam from "react-webcam";
 import { Row } from 'antd';
 
 import * as faceapi from "face-api.js";
@@ -18,11 +17,9 @@ interface IFaceAPIState {
 export default class FaceAPI extends Component<{}, IFaceAPIState> {
     webcamId: string = "webcam";
     canvasId: string = "overlay";
-    _child: React.RefObject<Webcam>;
     constructor(props: {}) {
         super(props);
         this.state = { ready: false, started: false };
-        this._child = React.createRef();
     }
 
     async loadModel() {
@@ -31,10 +28,10 @@ export default class FaceAPI extends Component<{}, IFaceAPIState> {
         await faceapi.loadAgeGenderModel(MODEL_URL);
         await faceapi.loadFaceExpressionModel(MODEL_URL);
         this.setState({ ready: true });
-        console.log("loaded models", faceapi)
+        console.log("loaded models")
     }
 
-    async applyModel(node: Webcam, videoElement: HTMLVideoElement, canvas: HTMLCanvasElement) {
+    async applyModel(videoElement: HTMLVideoElement, canvas: HTMLCanvasElement) {
         const detections = await faceapi.detectSingleFace(videoElement).withFaceExpressions()
         if (!detections) {
             console.log("Detections are undefined :-( Model is not ready yet?")
@@ -54,9 +51,11 @@ export default class FaceAPI extends Component<{}, IFaceAPIState> {
                 }
             }
             console.log(maxConfidenceEmotion);
-            this.setState({ emotion: maxConfidenceEmotion })
+            if (this.state.emotion !== maxConfidenceEmotion) {
+                this.setState({ emotion: maxConfidenceEmotion })
+            }
         }
-        setTimeout(() => this.applyModel(node, videoElement, canvas))
+        setTimeout(() => this.applyModel(videoElement, canvas))
     }
 
     async startModel() {
@@ -66,19 +65,22 @@ export default class FaceAPI extends Component<{}, IFaceAPIState> {
         }
         const videoElement = document.getElementById(this.webcamId) as HTMLVideoElement
         const canvas = document.getElementById(this.canvasId) as HTMLCanvasElement
-        const node = this._child.current;
-        if (node) {
-            console.log("starting face detection loop")
-            await this.applyModel(node, videoElement, canvas);
-        }
+        console.log("starting face detection loop")
+        await this.applyModel(videoElement, canvas);
     }
-    render() {
+    async componentDidMount() {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        const video = document.getElementById(this.webcamId) as HTMLMediaElement;
+        video.srcObject = stream;
+        video.play()
         if (!this.state.started) {
             this.startModel();
         }
+    }
+    render() {
         return <div style={centerStyle} className={"webcam-component"}>
             <Row>
-                <Webcam id={this.webcamId} ref={this._child} hidden={false}></Webcam>
+                <video id={this.webcamId}></video>
                 <canvas style={{ position: "absolute", top: "0px", left: "0px" }} id={this.canvasId}></canvas>
             </Row>
         </div>
