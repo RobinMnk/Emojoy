@@ -13,7 +13,9 @@ export class Game extends React.Component<IProps, {}> {
 
     render() {
         return (
-          <Pong/>
+          <div>
+            <Pong/>
+          </div>
         );
     }
 }
