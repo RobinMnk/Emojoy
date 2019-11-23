@@ -5,7 +5,7 @@ import { Info } from './Info';
 import FaceAPI from "../components/faceapi";
 import { PracticeEasy } from '../components/PracticeEasy';
 import { PracticeAdvanced } from '../components/PracticeAdvanced';
-const { Sider, Content, Header } = Layout;
+const { Sider, Content } = Layout;
 const { SubMenu, Item } = Menu;
 const { Title } = Typography;
 
