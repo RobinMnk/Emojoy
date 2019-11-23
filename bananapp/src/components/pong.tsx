@@ -8,12 +8,13 @@ const centerStyle = {
   display: 'flex',
 };
 
-export default class PongCanvas extends Component<{}, { waitingForFaceAPI: boolean }> {
+export default class PongCanvas extends Component<{}, { waitingForFaceAPI: boolean, bv: boolean }> {
   pong: any
   constructor(props: {}) {
     super(props); 
     this.state = {
       waitingForFaceAPI: true,
+      bv: true,
     }
   }
     
@@ -42,6 +43,9 @@ export default class PongCanvas extends Component<{}, { waitingForFaceAPI: boole
       Pong.running = true;
       window.requestAnimationFrame(Pong.loop);
     }
+    this.setState({
+      bv: false
+    })
   }
 
   render() {
@@ -79,8 +83,9 @@ export default class PongCanvas extends Component<{}, { waitingForFaceAPI: boole
           </div>
           {Pong.running ? null : (
             <div style={centerStyle}>
-              <div style={{ top: 'calc(30vh - 16px)', position: 'absolute' }}>
+              <div style={{ top: 'calc(50vh - 16px)', position: 'absolute' }}>
                 <Button
+                  hidden={!this.state.bv}
                   icon = 'play-circle'
                   type='primary'
                   onClick={ _ => this.startRound()}

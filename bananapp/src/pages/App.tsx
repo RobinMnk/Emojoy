@@ -100,7 +100,7 @@ class App extends React.Component<{}, IState> {
                                 <span>Pong</span>
                             </Item>
                             <Item key="rps">
-                                <Icon type="user" />
+                                <Icon type="scissor" />
                                 <span>R-P-S</span>
                             </Item>
                         </SubMenu>

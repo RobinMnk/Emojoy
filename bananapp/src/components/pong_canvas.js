@@ -32,7 +32,7 @@ var Paddle = {
 			width: 18,
 			height: 140,
 			x: side === 'left' ? 150 : this.canvas.width - 150,
-			y: (this.canvas.height / 2) - (side === 'left' ? 70 : 35),
+			y: (this.canvas.height / 2) - 75,
 			score: 0,
 			move: DIRECTION.IDLE,
 			speed: 7
@@ -98,6 +98,10 @@ var Game = {
 	},
 
 	menu: function () {
+		if(!this.context) {
+			return;
+		}
+
 		// Draw all the Pong objects in their current state
 		Pong.draw();
 
@@ -125,6 +129,9 @@ var Game = {
 
 	// Update all objects (move the player, paddle, ball, increment the score, etc.)
 	update: function () {
+		if(!this.context) {
+			return;
+		}
 		if (!this.over) {
 			// If the ball collides with the bound limits - correct the x and y coords.
 			if (this.ball.x <= 0) Pong._resetTurn.call(this, this.paddle, this.player);
@@ -219,6 +226,10 @@ var Game = {
 
 	// Draw the objects to the canvas element
 	draw: function () {
+		if(!this.context) {
+			return;
+		}
+
 		// Clear the Canvas
 		this.context.clearRect(
 			0,
@@ -356,7 +367,7 @@ var Game = {
 
 	// Wait for a delay to have passed after each turn.
 	_turnDelayIsOver: function() {
-		return ((new Date()).getTime() - this.timer >= 1000);
+		return ((new Date()).getTime() - this.timer >= 2000);
 	},
 
 	// Select a random color as the background of each level/round.
