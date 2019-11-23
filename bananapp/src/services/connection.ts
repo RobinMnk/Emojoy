@@ -7,15 +7,22 @@ interface Message {
   id: string | undefined,
 }
 
+const decoder = new TextDecoder("utf-8");
+
+
+type StreamCB = (stream: MediaStream) => void
+type DataCB = (data: any) => void
+
 export class Connection {
   ws: WebSocket | undefined;
   peer: Peer.Instance | undefined;
   id: string | undefined;
-  onStream: (stream: MediaStream) => void
+  onStream: StreamCB
   outstream: MediaStream
   instream: MediaStream | undefined
+  player: 'A' | 'B' | undefined
 
-  constructor(onStream: (stream: MediaStream) => void, stream: MediaStream,) {
+  constructor(onStream: StreamCB, stream: MediaStream, onData: DataCB) {
     this.onStream = stream => {
       this.instream = stream
       onStream(stream)
@@ -44,6 +51,20 @@ export class Connection {
     return this.id
   }
 
+  onData = data => {
+    data = decoder.decode(data)
+    console.log(data)
+  }
+
+  sendData(data: object) {
+    const peer = this.peer
+    if (!peer) {
+      console.log('no peer connection, can not send data')
+    } else {
+      peer.send(JSON.stringify(data))
+    }
+  }
+
   handleAnswer = (message: Message) => {
     if (!this.peer) {
       console.log('no peer created')
@@ -55,9 +76,9 @@ export class Connection {
   }
 
   handleSignal = (data: any) => {
-    console.log('in singal')
+    console.log('in signal')
     const ws = this.ws
-    if (ws && (data.type == 'answer' || data.type === 'offer')) {
+    if (ws && (data.type === 'answer' || data.type === 'offer')) {
       console.log('in signal if')
       ws.send(JSON.stringify({
         id: this.getId(),
@@ -74,12 +95,13 @@ export class Connection {
     } else if (!message.signal) {
       console.log('no offer in payload')
     } else {
-      const ws = this.ws
       this.peer = new Peer()
       this.peer.on('signal', this.handleSignal)
       this.peer.on('stream', this.onStream)
+      this.peer.on('data', this.onData)
       this.peer.signal(message.signal)
       this.peer.addStream(this.outstream)
+      this.player = 'B'
     }
   }
 
@@ -91,7 +113,9 @@ export class Connection {
       this.peer = new Peer({ initiator: true });
       this.peer.on('signal', this.handleSignal)
       this.peer.on('stream', this.onStream)
+      this.peer.on('data', this.onData)
       this.peer.addStream(this.outstream)
+      this.player = 'A'
     }
   }
 

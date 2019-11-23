@@ -6,7 +6,9 @@ import Pong from './Pong/Pong';
 import { Emotion } from "../components/faceapi";
 import { PracticeEasy } from '../components/PracticeEasy';
 import { PracticeAdvanced } from '../components/PracticeAdvanced';
+import WebRtc from '../components/web_rtc';
 import { RockPaperScissors } from '../components/rockpaperscissors';
+import PongCanvas from '../components/pong';
 const { Sider, Content } = Layout;
 const { SubMenu, Item } = Menu;
 
@@ -43,6 +45,8 @@ class App extends React.Component<{}, IState> {
             case 'info':
                 return <Info switchPage={p => this.switchPage(p)}/>;
             case 'pong':
+                return <PongCanvas />;
+            case 'game':
                 return <Pong />;
             case 'rps':
                 return <RockPaperScissors />;
@@ -56,13 +60,15 @@ class App extends React.Component<{}, IState> {
                 );
             case 'practice3':
                 return <p> Not Implemented Yet, Practice Scenario 3 </p>;
+            case 'webrtc_test':
+                return <WebRtc></WebRtc>
         }
     }
 
     render() {
         return (
             <Layout style={{ height: '100vh' }}>
-                <Sider collapsible collapsed={this.state.collapsed} onCollapse={this.toggle}>
+                <Sider collapsible={false} collapsed={this.state.collapsed} onCollapse={this.toggle}>
                     <div className="logo" />
                     <Menu
                         theme="dark"
@@ -110,14 +116,22 @@ class App extends React.Component<{}, IState> {
                                 <Icon type="smile" />
                                 <span>Transitions</span>
                             </Item>
+                            {/* <Item key="practice3">
+                                <Icon type="smile" />
+                                <span>Scenario 3</span>
+                            </Item> */}
+                            <Item key="webrtc_test">
+                                <Icon type="meh" />
+                                <span>Webrtc test</span>
+                            </Item>
                         </SubMenu>
                     </Menu>
                 </Sider>
                 <Layout>
                     <Content
                         style={{
-                            margin: '16px',
-                            padding: 24,
+                            margin: this.state.currentPage === 'pong' ? 0 : '16px',
+                            padding: this.state.currentPage === 'pong' ? 0 : 24,
                             background: '#fff',
                             minHeight: 280,
                         }}

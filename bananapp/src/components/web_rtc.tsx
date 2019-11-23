@@ -13,23 +13,22 @@ interface IFaceAPIState {
 }
 
 export default class WebRtc extends Component<{}, IFaceAPIState> {
-    constructor(props: {}) {
-        super(props);
-    }
+    connection: Connection
     async componentDidMount() {
-        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-        new Connection(this.onStream, stream)
-        const video = document.getElementById('self') as HTMLMediaElement;
-        video.srcObject = stream;
-        video.play()
-        // this.setupWebRtc(stream);
-
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      this.connection = new Connection(this.onStream, stream, () => {})
+      const video = document.getElementById('self') as HTMLMediaElement;
+      video.srcObject = stream;
+      video.play()        
     }
 
     onStream = (stream: MediaStream) => {
-        const video = document.getElementById('playback') as HTMLMediaElement
-        video.srcObject = stream
-        video.play()
+      const video = document.getElementById('playback') as HTMLMediaElement
+      video.srcObject = stream
+      video.play()
+      setTimeout(() => {
+          this.connection.sendData({test: 123})
+      }, 2000);
     }
     render() {
         return <div style={centerStyle}>

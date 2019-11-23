@@ -14,6 +14,8 @@ interface IProps {
     setEmotion(em: Emotion): void;
     onRunning?(): void;
     noCenter?: boolean;
+    height?: number;
+    width?: number;
 }
 
 interface IFaceAPIState {
@@ -115,13 +117,30 @@ export default class FaceAPI extends Component<IProps, IFaceAPIState> {
         if(!this.mounted) {
             return null;
         }
+        let divStyle = this.props.noCenter ? {} : centerStyle
+        const videoStyle = {
+            transform: "rotateY(180deg)"
+        }
+        const canvasStyle = {
+            top: "0px", 
+            left: "0px"
+        }
+        
+        if(this.props.width && this.props.height) {
+            Object.assign(videoStyle, {
+                width: this.props.width,
+                height: this.props.height,
+            });
+            Object.assign(canvasStyle, {
+                width: this.props.width,
+                height: this.props.height,
+            });
+        }
 
-        return <div style={this.props.noCenter ? {} : centerStyle} className={"webcam-component"}>
+        return <div style={divStyle} className={"webcam-component"}>
             <Row>
-                <video style={{
-                    transform: "rotateY(180deg)"
-                    }} id={this.webcamId}></video>
-                <canvas style={{ position: "absolute", top: "0px", left: "0px"}} id={this.canvasId}></canvas>
+                <video style={videoStyle} id={this.webcamId}></video>
+                <canvas style={Object.assign(canvasStyle, {position: 'absolute'})} id={this.canvasId}></canvas>
             </Row>
         </div>
     }
