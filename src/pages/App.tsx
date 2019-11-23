@@ -108,9 +108,7 @@ const renderContent = (key: string) => {
             );
         case 'practice2':
             return (
-                <PracticeAdvanced
-
-                />
+                <PracticeAdvanced />
             );
         case 'practice3':
             return <p> Not Implemented Yet, Practice Scenario 3 </p>;
