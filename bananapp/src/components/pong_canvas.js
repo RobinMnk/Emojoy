@@ -20,7 +20,7 @@ var Ball = {
 			y: (this.canvas.height / 2) - 9,
 			moveX: DIRECTION.IDLE,
 			moveY: DIRECTION.IDLE,
-			speed: incrementedSpeed || 9
+			speed: incrementedSpeed || 6
 		};
 	}
 };
@@ -30,12 +30,12 @@ var Paddle = {
 	new: function (side) {
 		return {
 			width: 18,
-			height: 70,
+			height: 140,
 			x: side === 'left' ? 150 : this.canvas.width - 150,
-			y: (this.canvas.height / 2) - 35,
+			y: (this.canvas.height / 2) - (side === 'left' ? 70 : 35),
 			score: 0,
 			move: DIRECTION.IDLE,
-			speed: 10
+			speed: 7
 		};
 	}
 };
@@ -49,11 +49,11 @@ var Game = {
     }
 		this.context = this.canvas.getContext('2d');
 
-		this.canvas.width = 1400;
-		this.canvas.height = 1000;
-
-		this.canvas.style.width = (this.canvas.width / 2) + 'px';
-		this.canvas.style.height = (this.canvas.height / 2) + 'px';
+		this.canvas.style.width = 'calc(100vw - 168px)';
+		this.canvas.style.height = '100vh';
+		
+		this.canvas.width = this.canvas.offsetWidth; // '100vw';
+		this.canvas.height = this.canvas.offsetHeight;  // '100vh';
 
 		this.player = Paddle.new.call(this, 'left');
 		this.paddle = Paddle.new.call(this, 'right');
@@ -63,7 +63,7 @@ var Game = {
 		this.running = this.over = false;
 		this.turn = this.paddle;
 		this.timer = this.round = 0;
-		this.color = '#2c3e50';
+		this.color = '#237804';
 
 		Pong.menu();
 		Pong.listen();
@@ -117,7 +117,7 @@ var Game = {
 		this.context.fillStyle = '#ffffff';
 
 		// Draw the 'press any key to begin' text
-		this.context.fillText('Press any key to begin',
+		this.context.fillText('', // Press any key to begin
 			this.canvas.width / 2,
 			this.canvas.height / 2 + 15
 		);
@@ -239,7 +239,7 @@ var Game = {
 		);
 
 		// Set the fill style to white (For the paddles and the ball)
-		this.context.fillStyle = '#ffffff';
+		this.context.fillStyle = '#1890ff'; // ''#ffffff';
 
 		// Draw the Player
 		this.context.fillRect(
@@ -266,6 +266,8 @@ var Game = {
 				this.ball.height
 			);
 		}
+		
+		this.context.fillStyle = '#ffffff';
 
 		// Draw the net (Line in the middle)
 		this.context.beginPath();
