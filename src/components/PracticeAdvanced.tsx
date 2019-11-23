@@ -3,7 +3,8 @@ import { Typography, Button, Row, Col, Table, Icon } from 'antd';
 import FaceAPI, { Emotion } from './faceapi';
 const { Title } = Typography;
 
-const MAX_NUMBER_OF_ROWS = 1;
+const MAX_NUMBER_OF_ROWS = 3;
+const SCORING_TYPE : 'fixed_time' | 'fixed_rows' = 'fixed_rows';
 
 const centerStyle = {
     justifyContent: 'space-around',
@@ -31,6 +32,7 @@ interface IState {
     phase: 'info' | 'playing' | 'finished'
     emotionTable: Entry[];
     score: number;
+    startTime?: number;
 }
 
 export class PracticeAdvanced extends React.Component<IProps, IState> {
@@ -51,17 +53,35 @@ export class PracticeAdvanced extends React.Component<IProps, IState> {
         this.setState({
             phase: 'playing',
             emotionTable: emptyTable,
+            startTime: Date.now()
         });
     }
 
     finishGame() {
-        debugger;
-        const rows = this.state.emotionTable.length-1;
+        let score = 0;
+        if(SCORING_TYPE === 'fixed_time') {
+            const rows = this.state.emotionTable.length-1;
+            score = rows + numCorrect(this.state.emotionTable[rows])
+        }
+
+        if(SCORING_TYPE === 'fixed_rows') {
+            const millis = Date.now() - this.state.startTime;
+            score = Math.floor(millis/1000);
+        }
+
         this.setState({
             phase: 'finished',
-            score: rows + numCorrect(this.state.emotionTable[rows])
+            score: score
         });
     }
+
+    getScore = () => (
+        SCORING_TYPE === "fixed_rows" ? (
+            `Your Time: ${this.state.score} seconds`
+        ) : (
+            `Your Score: ${this.state.score} points`
+        )
+    );
 
     emotionChange(em: Emotion) {
         console.log("incoming: ", em);
@@ -118,14 +138,18 @@ export class PracticeAdvanced extends React.Component<IProps, IState> {
                     />
                     {this.state.phase === 'finished' ? (
                         <>
-                            <Title level={4}>Finished! Your Score: {this.state.score}</Title>
-                            <Button
-                                onClick={() => this.setState({phase: 'info'})}
-                            >Back</Button>
-                            <Button
-                                type='primary'
-                                onClick={() => this.setupGame()}
-                            >Play again</Button>
+                            <div style={{ justifyContent: 'space-around', display: 'flex' }}>
+                                <Title level={4}>Finished! {this.getScore()}</Title>
+                            </div>
+                            <div style={centerStyle}>
+                                <Button
+                                    onClick={() => this.setState({phase: 'info'})}
+                                >Back</Button>
+                                <Button
+                                    type='primary'
+                                    onClick={() => this.setupGame()}
+                                >Play again</Button>
+                            </div>
                         </>
                     ) : null }
                 </div>
