@@ -1,6 +1,7 @@
 import React from 'react'
 import { Typography, Button, Row, Col, Table, Icon } from 'antd';
 import FaceAPI, { Emotion } from './faceapi';
+import { emotion2emoji } from '../pages/App';
 const { Title } = Typography;
 
 const SCORING_TYPE : 'fixed_time' | 'fixed_rows' = 'fixed_rows';
@@ -197,7 +198,7 @@ const newEntry = (round: number) : Entry => {
 
 const columns = () => {
     const cols = emotions.map(em => ({
-        title: em,
+        title: `${em} ${emotion2emoji(em as Emotion)}`,
         dataIndex: em,
         key: em,
         render: (done: any) => renderDone(done),

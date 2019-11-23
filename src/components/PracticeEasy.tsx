@@ -1,6 +1,7 @@
 import React from 'react'
 import FaceAPI, { Emotion } from "./faceapi";
 import { Row, Typography, Button } from "antd";
+import { emotion2emoji } from '../pages/App';
 const { Title } = Typography;
 
 interface IProps {
@@ -14,26 +15,7 @@ interface IState {
     emotionTask?: Emotion;
     correctness?: boolean;
 }
-const emotion2emoji = (emotion: Emotion | undefined) => {
-    switch (emotion) {
-        case "neutral":
-            return "😐";
-        case "happy":
-            return "😄";
-        case "sad":
-            return "😞";
-        case "surprised":
-            return "😯";
-        case "angry":
-            return "😠";
-        case "disgusted":
-            return "🤮";
-        case "fearful":
-            return "😬";
-        default:
-            return "😐";
-    }
-}
+
 export class PracticeEasy extends React.Component<IProps, IState> {
     constructor(props: Readonly<IProps>) {
         super(props);
