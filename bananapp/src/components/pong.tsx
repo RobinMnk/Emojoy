@@ -47,8 +47,8 @@ export default class PongCanvas extends Component<{}, { waitingForFaceAPI: boole
   render() {
     const faceAPIstyle = {
       // position: 'absolute',
-      left: 'calc(50% - 125px)',
-      top: 'calc(100vh - 155px)',
+      left: 'calc(50vw - 125px - 84px)',
+      top: 'calc(100vh - 160px)',
       width: '250px',
       height: '150px',
       display: 'flex',
