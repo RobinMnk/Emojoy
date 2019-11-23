@@ -1,7 +1,7 @@
 import React from 'react'
 import FaceAPI, { Emotion } from "./faceapi";
-import { emotion2emoji } from '../pages/App';
-import { Row, Typography, Button, notification } from "antd";
+import { emotion2emoji, feedbackNotification } from '../pages/App';
+import { Row, Typography, Button } from "antd";
 const { Title } = Typography;
 
 interface IProps {
@@ -16,35 +16,7 @@ interface IState {
     correctness?: boolean;
 }
 
-const feedbackNotification = () => {
-    notification.open({
-        message: "NICE! 🙌",
-        duration: 1.5,
-        style: {
-            backgroundColor: "lightgreen"
-        }
-    })
-}
-const emotion2emoji = (emotion: Emotion | undefined) => {
-    switch (emotion) {
-        case "neutral":
-            return "😐";
-        case "happy":
-            return "😄";
-        case "sad":
-            return "😞";
-        case "surprised":
-            return "😯";
-        case "angry":
-            return "😠";
-        case "disgusted":
-            return "🤮";
-        case "fearful":
-            return "😬";
-        default:
-            return "😐";
-    }
-}
+
 export class PracticeEasy extends React.Component<IProps, IState> {
     constructor(props: Readonly<IProps>) {
         super(props);

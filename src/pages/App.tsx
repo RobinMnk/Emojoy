@@ -1,6 +1,6 @@
 import React from 'react';
 import '../App.css';
-import { Icon, Menu, Layout, Typography } from 'antd';
+import { Icon, Menu, Layout, Typography, notification } from 'antd';
 import { Info } from './Info';
 import Pong from './Pong/Pong';
 import FaceAPI, { Emotion } from "../components/faceapi";
@@ -94,7 +94,7 @@ class App extends React.Component<{}, IState> {
                             </Item>
                             <Item key="practice2">
                                 <Icon type="smile" />
-                                <span>Switching</span>
+                                <span>Transitions</span>
                             </Item>
                             {/* <Item key="practice3">
                                 <Icon type="smile" />
@@ -139,6 +139,19 @@ export const emotion2emoji = (emotion: Emotion | undefined) => {
         default:
             return "😐";
     }
+}
+
+type Placement = 'topRight' | 'topLeft'
+
+export const feedbackNotification = (place?: Placement) => {
+    notification.open({
+        message: "NICE! 🙌",
+        duration: 1.5,
+        placement: place ? place : 'topRight',
+        style: {
+            backgroundColor: "lightgreen"
+        }
+    })
 }
 
 export default App;

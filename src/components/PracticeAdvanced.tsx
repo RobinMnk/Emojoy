@@ -1,7 +1,7 @@
 import React from 'react'
 import { Typography, Button, Row, Col, Table, Icon } from 'antd';
 import FaceAPI, { Emotion } from './faceapi';
-import { emotion2emoji } from '../pages/App';
+import { emotion2emoji, feedbackNotification } from '../pages/App';
 const { Title } = Typography;
 
 const SCORING_TYPE : 'fixed_time' | 'fixed_rows' = 'fixed_rows';
@@ -94,6 +94,8 @@ export class PracticeAdvanced extends React.Component<IProps, IState> {
                 table.pop();
                 currentEntry[em] = 'done';
                 table.push(currentEntry);
+
+                feedbackNotification('topLeft');
 
                 if(isDone(currentEntry)) {
 
