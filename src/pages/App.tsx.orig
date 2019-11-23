@@ -2,11 +2,14 @@ import React from 'react';
 import '../App.css';
 import { Icon, Menu, Layout, Typography } from 'antd';
 import { Info } from './Info';
+<<<<<<< HEAD
 import Pong from './Pong/Pong';
+=======
 import FaceAPI from "../components/faceapi";
 import { PracticeEasy } from '../components/PracticeEasy';
 import { PracticeAdvanced } from '../components/PracticeAdvanced';
-const { Sider, Content } = Layout;
+>>>>>>> master
+const { Sider, Content, Header } = Layout;
 const { SubMenu, Item } = Menu;
 const { Title } = Typography;
 
@@ -96,7 +99,15 @@ const renderContent = (key: string) => {
         case 'info':
             return <Info />;
         case 'game':
+<<<<<<< HEAD
             return <Pong />;
+=======
+            return (
+                <FaceAPI 
+                    setEmotion={em => console.log(em)}
+                ></FaceAPI>)
+            ;
+>>>>>>> master
         case 'practice1':
             return (
                 <PracticeEasy
@@ -105,7 +116,9 @@ const renderContent = (key: string) => {
             );
         case 'practice2':
             return (
-                <PracticeAdvanced />
+                <PracticeAdvanced
+
+                />
             );
         case 'practice3':
             return <p> Not Implemented Yet, Practice Scenario 3 </p>;
