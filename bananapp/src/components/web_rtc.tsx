@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Webcam from "react-webcam";
 import { Row } from 'antd';
 import { Connection } from '../services/connection';
 
@@ -14,29 +13,27 @@ interface IFaceAPIState {
 }
 
 export default class WebRtc extends Component<{}, IFaceAPIState> {
-    webcamId: string = "webcam";
-    _webcam: React.RefObject<Webcam>;
+    connection: Connection
+
     constructor(props: {}) {
-        super(props);
-        this.state = { ready: false };
-        this._webcam = React.createRef();
-        
-      }
+        super(props); 
+    }
       
-      async componentDidMount() {
-        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-        new Connection(this.onStream, stream)
-        const video = document.getElementById('self') as HTMLMediaElement;
-        video.srcObject = stream;
-        video.play()
-        // this.setupWebRtc(stream);
-        
+    async componentDidMount() {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      this.connection = new Connection(this.onStream, stream, () => {})
+      const video = document.getElementById('self') as HTMLMediaElement;
+      video.srcObject = stream;
+      video.play()        
     }
 
     onStream = (stream: MediaStream) => {
       const video = document.getElementById('playback') as HTMLMediaElement
       video.srcObject = stream
       video.play()
+      setTimeout(() => {
+          this.connection.sendData({test: 123})
+      }, 2000);
     }
     render() {
         return <div style={centerStyle}>

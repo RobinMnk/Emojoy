@@ -6,6 +6,7 @@ import Pong from './Pong/Pong';
 import { Emotion } from "../components/faceapi";
 import { PracticeEasy } from '../components/PracticeEasy';
 import { PracticeAdvanced } from '../components/PracticeAdvanced';
+import WebRtc from '../components/web_rtc';
 const { Sider, Content } = Layout;
 const { SubMenu, Item } = Menu;
 
@@ -55,6 +56,8 @@ class App extends React.Component<{}, IState> {
                 );
             case 'practice3':
                 return <p> Not Implemented Yet, Practice Scenario 3 </p>;
+            case 'webrtc_test':
+                return <WebRtc></WebRtc>
         }
     }
 
@@ -99,6 +102,10 @@ class App extends React.Component<{}, IState> {
                                 <Icon type="smile" />
                                 <span>Scenario 3</span>
                             </Item> */}
+                            <Item key="webrtc_test">
+                                <Icon type="meh" />
+                                <span>Webrtc test</span>
+                            </Item>
                         </SubMenu>
                     </Menu>
                 </Sider>
