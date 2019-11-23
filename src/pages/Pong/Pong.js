@@ -3,6 +3,8 @@ import Paddle from "./components/paddle";
 import Ball from "./components/ball";
 import Board from "./components/board";
 import Waves from "./components/waves";
+import { Row, Col } from 'antd';
+import FaceAPI, { Emotion } from '../../components/faceapi';
 import "./Pong.css";
 
 class Pong extends Component {
@@ -258,28 +260,51 @@ class Pong extends Component {
     });
   };
 
+  emotionChange = em => {
+    let direction = "";
+    if (em === 'surprised') {
+      direction = "down";
+    } else if (em === 'happy') {
+      direction = "up";
+    }
+    this.setState({
+      keyPressed: direction
+    }, this.handlePlayerMove);
+  }
+
   render() {
     return (
-      <main
-        className="main"
-        onKeyDown={this.handleKeyDown}
-        tabIndex="0"
-        ref="main"
-      >
-        <Board />
-        <div className="score">
-          <span>{this.state.score[0]}</span>
-          <span>{this.state.score[1]}</span>
-        </div>
-        <Paddle
-          animate={this.state.animate[0]}
-          player={true}
-          pos={this.state.playerY}
-        />
-        <Ball ball={this.state.ball} />
-        <Paddle animate={this.state.animate[1]} pos={this.state.opponentY} />
-        <Waves waves={this.state.waves} />
-      </main>
+      <Row>
+        <Col span={16}>
+            <FaceAPI
+                setEmotion={em => this.emotionChange(em)}
+                noCenter={true}
+                onRunning={() => alert("Done")}
+            />
+        </Col>
+        <Col span={16}>
+          <main
+            className="main"
+            onKeyDown={this.handleKeyDown}
+            tabIndex="0"
+            ref="main"
+          >
+            <Board />
+            <div className="score">
+              <span>{this.state.score[0]}</span>
+              <span>{this.state.score[1]}</span>
+            </div>
+            <Paddle
+              animate={this.state.animate[0]}
+              player={true}
+              pos={this.state.playerY}
+            />
+            <Ball ball={this.state.ball} />
+            <Paddle animate={this.state.animate[1]} pos={this.state.opponentY} />
+            <Waves waves={this.state.waves} />
+          </main>
+        </Col>
+      </Row>
     );
   }
 }
