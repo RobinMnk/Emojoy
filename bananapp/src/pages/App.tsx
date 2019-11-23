@@ -110,10 +110,6 @@ class App extends React.Component<{}, IState> {
                                 <Icon type="smile" />
                                 <span>Transitions</span>
                             </Item>
-                            {/* <Item key="practice3">
-                                <Icon type="smile" />
-                                <span>Scenario 3</span>
-                            </Item> */}
                         </SubMenu>
                     </Menu>
                 </Sider>
