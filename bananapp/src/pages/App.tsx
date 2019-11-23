@@ -1,11 +1,12 @@
 import React from 'react';
 import '../App.css';
-import { Icon, Menu, Layout, Typography, notification } from 'antd';
+import { Icon, Menu, Layout, notification } from 'antd';
 import { Info } from './Info';
 import Pong from './Pong/Pong';
 import { Emotion } from "../components/faceapi";
 import { PracticeEasy } from '../components/PracticeEasy';
 import { PracticeAdvanced } from '../components/PracticeAdvanced';
+import { RockPaperScissors } from '../components/rockpaperscissors';
 const { Sider, Content } = Layout;
 const { SubMenu, Item } = Menu;
 
@@ -41,13 +42,13 @@ class App extends React.Component<{}, IState> {
         switch(key) {
             case 'info':
                 return <Info switchPage={p => this.switchPage(p)}/>;
-            case 'game':
+            case 'pong':
                 return <Pong />;
+            case 'game':
+                return <RockPaperScissors />;
             case 'practice1':
                 return (
-                    <PracticeEasy
-    
-                    />
+                    <PracticeEasy />
                 );
             case 'practice2':
                 return (
@@ -68,17 +69,31 @@ class App extends React.Component<{}, IState> {
                         mode="inline"
                         defaultSelectedKeys={[this.state.currentPage]}
                         onSelect={vals => this.setState({ currentPage: vals.key })}
-                        openKeys={['3']}
+                        openKeys={['3', 'games']}
                         selectedKeys={[this.state.currentPage]}
                     >
                         <Item key="info">
                             <Icon type="info-circle" />
                             <span>Information</span>
                         </Item>
-                        <Item key="game">
-                            <Icon type="user" />
-                            <span>Play</span>
-                        </Item>
+                        
+                        <SubMenu key="games"
+                            title={
+                                <span>
+                                    <Icon type="team" />
+                                    <span>Games</span>
+                                </span>
+                            }
+                        >
+                            <Item key="pong">
+                                <Icon type="user" />
+                                <span>Pong</span>
+                            </Item>
+                            <Item key="rps">
+                                <Icon type="user" />
+                                <span>R-P-S</span>
+                            </Item>
+                        </SubMenu>
                         <SubMenu key="3"
                             title={
                                 <span>
