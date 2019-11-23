@@ -3,8 +3,9 @@ import { Typography, Button, Row, Col, Table, Icon } from 'antd';
 import FaceAPI, { Emotion } from './faceapi';
 const { Title } = Typography;
 
-const MAX_NUMBER_OF_ROWS = 3;
 const SCORING_TYPE : 'fixed_time' | 'fixed_rows' = 'fixed_rows';
+const MAX_NUMBER_OF_ROWS = 3;
+const TIME_IN_SECONDS = 60;
 
 const centerStyle = {
     justifyContent: 'space-around',
@@ -84,7 +85,6 @@ export class PracticeAdvanced extends React.Component<IProps, IState> {
     );
 
     emotionChange(em: Emotion) {
-        console.log("incoming: ", em);
         if(this.state.phase === 'playing') {
             const table = this.state.emotionTable;
             const currentEntry = table[table.length-1];
@@ -164,7 +164,7 @@ export class PracticeAdvanced extends React.Component<IProps, IState> {
                     <FaceAPI
                         setEmotion={em => this.emotionChange(em)}
                         noCenter={true}
-                        onRunning={() => this.setState({loading: false})}
+                        onRunning={() => this.setState({ loading: false })}
                     />
                 </Col>
                 <Col span={8}>{this.renderAux()}</Col>
@@ -215,7 +215,7 @@ const columns = () => {
 const renderDone = (done: EmState) => (
     <div style={centerStyle}>
         {(done === 'done') ? (
-            <Icon type="check-circle" theme="twoTone" twoToneColor="#52c41a" />
+            <Icon style={{fontSize: 20}} type="check-circle" theme="twoTone" twoToneColor="#52c41a" />
         ) : (
             <Icon type="minus-circle" theme="twoTone" twoToneColor="#eb2f96" />
         )}

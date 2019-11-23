@@ -8,7 +8,7 @@ const centerStyle = {
     display: 'flex'
 };
 
-export type Emotion = 'neutral' | 'happy' | 'sad' | 'surprised' | 'angry' | 'disgusted' | 'feared'
+export type Emotion = 'neutral' | 'happy' | 'sad' | 'surprised' | 'angry' | 'disgusted' | 'fearful'
 
 interface IProps {
     setEmotion(em: Emotion): void;
@@ -23,9 +23,10 @@ interface IFaceAPIState {
     emotion?: string;
 }
 
-/** USAGE:
+/** EXAMPLE USAGE:
  *  <FaceAPI
  *      setEmotion={em => handleEmotionChange(em)}
+ *      onRunning={() => this.setState({ loading: false })}
  *  />
  */
 export default class FaceAPI extends Component<IProps, IFaceAPIState> {
@@ -74,6 +75,7 @@ export default class FaceAPI extends Component<IProps, IFaceAPIState> {
                 this.setState({ emotion: maxConfidenceEmotion });
                 this.props.setEmotion(maxConfidenceEmotion as Emotion);
             }
+            console.log(maxConfidenceEmotion);
         }
         setTimeout(() => this.applyModel(videoElement, canvas), 50);
     }
