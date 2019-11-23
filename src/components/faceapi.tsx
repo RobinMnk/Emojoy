@@ -75,6 +75,7 @@ export default class FaceAPI extends Component<IProps, IFaceAPIState> {
                 this.setState({ emotion: maxConfidenceEmotion });
                 this.props.setEmotion(maxConfidenceEmotion as Emotion);
             }
+            console.log(maxConfidenceEmotion);
         }
         setTimeout(() => this.applyModel(videoElement, canvas), 50);
     }
