@@ -1,5 +1,6 @@
 import React from 'react'
 import FaceAPI, { Emotion } from "./faceapi";
+import { emotion2emoji } from '../pages/App';
 import { Row, Typography, Button, notification } from "antd";
 const { Title } = Typography;
 
@@ -14,6 +15,7 @@ interface IState {
     emotionTask?: Emotion;
     correctness?: boolean;
 }
+
 const feedbackNotification = () => {
     notification.open({
         message: "NICE! 🙌",
@@ -22,26 +24,6 @@ const feedbackNotification = () => {
             backgroundColor: "lightgreen"
         }
     })
-}
-const emotion2emoji = (emotion: Emotion | undefined) => {
-    switch (emotion) {
-        case "neutral":
-            return "😐";
-        case "happy":
-            return "😄";
-        case "sad":
-            return "😞";
-        case "surprised":
-            return "😯";
-        case "angry":
-            return "😠";
-        case "disgusted":
-            return "🤮";
-        case "fearful":
-            return "😬";
-        default:
-            return "😐";
-    }
 }
 export class PracticeEasy extends React.Component<IProps, IState> {
     constructor(props: Readonly<IProps>) {
@@ -75,7 +57,7 @@ export class PracticeEasy extends React.Component<IProps, IState> {
     render() {
         return <div style={{marginBottom: "30"}}>
             <Row type="flex" justify="center">
-                <Title>Learning Emotions</Title>
+                <Title>Forming Emotions</Title>
             </Row>
             {!this.state.started ? <div><Row type="flex" justify="center"><p>                
                 In this step you are going to practice emotional facial expressions. Press start and have fun!

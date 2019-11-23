@@ -260,15 +260,13 @@ class Pong extends Component {
     });
   };
 
-  emotionChange(em) {
+  emotionChange = em => {
     let direction = "";
-    console.log(em)
     if (em === 'surprised') {
       direction = "down";
     } else if (em === 'happy') {
       direction = "up";
     }
-    console.log(direction)
     this.setState({
       keyPressed: direction
     }, this.handlePlayerMove);
@@ -281,6 +279,7 @@ class Pong extends Component {
             <FaceAPI
                 setEmotion={em => this.emotionChange(em)}
                 noCenter={true}
+                onRunning={() => alert("Done")}
             />
         </Col>
         <Col span={16}>
