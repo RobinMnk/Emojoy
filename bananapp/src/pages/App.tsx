@@ -47,6 +47,8 @@ class App extends React.Component<{}, IState> {
             case 'pong':
                 return <PongCanvas />;
             case 'game':
+                return <Pong />;
+            case 'rps':
                 return <RockPaperScissors />;
             case 'practice1':
                 return (
@@ -66,7 +68,7 @@ class App extends React.Component<{}, IState> {
     render() {
         return (
             <Layout style={{ height: '100vh' }}>
-                <Sider collapsible collapsed={this.state.collapsed} onCollapse={this.toggle}>
+                <Sider collapsible={false} collapsed={this.state.collapsed} onCollapse={this.toggle}>
                     <div className="logo" />
                     <Menu
                         theme="dark"
@@ -128,8 +130,8 @@ class App extends React.Component<{}, IState> {
                 <Layout>
                     <Content
                         style={{
-                            margin: '16px',
-                            padding: 24,
+                            margin: this.state.currentPage === 'pong' ? 0 : '16px',
+                            padding: this.state.currentPage === 'pong' ? 0 : 24,
                             background: '#fff',
                             minHeight: 280,
                         }}

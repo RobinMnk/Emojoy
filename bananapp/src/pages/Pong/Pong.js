@@ -3,14 +3,20 @@ import Paddle from "./components/paddle";
 import Ball from "./components/ball";
 import Board from "./components/board";
 import Waves from "./components/waves";
-import { Row, Col } from 'antd';
+import { Button } from 'antd';
 import FaceAPI from '../../components/faceapi';
 import "./Pong.css";
+
+const centerStyle = {
+  justifyContent: 'space-around',
+  display: 'flex',
+};
 
 class Pong extends Component {
   constructor() {
     super();
     this.state = {
+      waitingForFaceAPI: true,
       animate: [false, false],
       waves: [],
       isStarted: false,
@@ -259,7 +265,8 @@ class Pong extends Component {
       score: score,
       interval: null,
       ball: ball,
-      opponentY: 40
+      opponentY: 40,
+      isStarted: false,
     });
   };
 
@@ -280,18 +287,26 @@ class Pong extends Component {
   }
 
   render() {
-    if (this.state.isStarted === false) {
-      this.handleRoundStart();
+    // if (this.state.isStarted === false) {
+    //   this.handleRoundStart();
+    // }
+
+    const faceAPIstyle = {
+      position: 'absolute',
+      left: 'calc(50% - 125px)',
+      top: 'calc(100vh - 155px)',
+      width: '250px',
+      height: '150px'
     }
+
+    const pongStyle = {
+      position: 'absolute',
+      width: '-webkit-fill-available'
+    }
+
     return (
-      <Row>
-        <Col span={16}>
-            <FaceAPI
-                setEmotion={em => this.emotionChange(em)}
-                noCenter={true}
-            />
-        </Col>
-        <Col span={16}>
+      <div style={{position: 'relative', margin: 0}}>
+        <div style={pongStyle}>
           <main
             className="main"
             onKeyDown={this.handleKeyDown}
@@ -312,8 +327,31 @@ class Pong extends Component {
             <Paddle animate={this.state.animate[1]} pos={this.state.opponentY} />
             <Waves waves={this.state.waves} />
           </main>
-        </Col>
-      </Row>
+        </div>
+        <div style={faceAPIstyle}>
+            <FaceAPI
+                setEmotion={em => this.emotionChange(em)}
+                onRunning={() => this.setState({ waitingForFaceAPI: false })}
+                noCenter={true}
+                width={250}
+                height={150}
+            />
+        </div>
+        {this.state.isStarted ? null : (
+          <div style={centerStyle}>
+            <div style={{ top: 'calc(50vh - 16px)', position: 'absolute' }}>
+              <Button
+                icon = 'play-circle'
+                type='primary'
+                onClick={ _ => this.handleRoundStart()}
+                loading={this.state.waitingForFaceAPI}
+              >
+                {this.state.waitingForFaceAPI ? 'Loading ...' : 'Play!'}
+              </Button>
+            </div>
+          </div>
+        )}
+      </div>
     );
   }
 }

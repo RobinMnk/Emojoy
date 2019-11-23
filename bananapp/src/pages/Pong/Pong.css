@@ -27,12 +27,12 @@
 
 .paddle_type-player {
   left: 0%;
-  background-color: white;
+  background-color: rgb(24, 144, 255);
 }
 
 .paddle_type-opponent {
   left: 98%;
-  background-color: black;
+  background-color: rgb(0, 21, 41);
 }
 .board {
   display: flex;
@@ -40,7 +40,7 @@
   justify-content: space-between;
   width: 100%;
   height: 100vh;
-  background-color: #558000;
+  background-color: #237804;
 }
 .circle {
   border-radius: 50%;
