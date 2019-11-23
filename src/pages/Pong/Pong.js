@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import Paddle from "./components/paddle";
 import Ball from "./components/ball";
-import Options from "./components/options";
 import Board from "./components/board";
 import Waves from "./components/waves";
 import "./Pong.css";
@@ -16,7 +15,7 @@ class Pong extends Component {
       score: [0, 0],
       playerY: 50,
       opponentY: 40,
-      playerSpeed: 0,
+      playerSpeed: 10,
       interval: null,
       ball: {
         animId: 0,
@@ -38,16 +37,15 @@ class Pong extends Component {
   };
 
   handlePlayerMove = event => {
-    let yPercent = (event.clientY * 100) / window.innerHeight - 10;
-    const speed = (event.movementY * 100) / window.innerHeight;
-    if (yPercent <= 0) {
-      yPercent = 0;
-    } else if (yPercent > 80) {
-      yPercent = 80;
+    let yPercent = 0
+    event.preventDefault();
+    if (event.keyCode === 38) {
+      yPercent = this.state.playerY - 1;
+    } else if (event.keyCode === 40) {
+      yPercent = this.state.playerY + 1;
     }
     this.setState({
       playerY: yPercent,
-      playerSpeed: speed
     });
   };
 
@@ -209,6 +207,7 @@ class Pong extends Component {
     }, 300);
   };
 
+  // TODO: If we want to remove speed change on corner remove it here
   cornerBounce = up => {
     const { ballSpeedX, ballSpeedY } = this.state.ball;
     const speedChange = up ? ballSpeedX : -ballSpeedX;
@@ -245,7 +244,9 @@ class Pong extends Component {
       <main
         className="main"
         onClick={this.handleRoundStart}
-        onMouseMove={this.handlePlayerMove}
+        onKeyDown={this.handlePlayerMove}
+        tabIndex="0"
+        ref="main"
       >
         <Board />
         <div className="score">
@@ -255,12 +256,6 @@ class Pong extends Component {
           )}
           <span>{this.state.score[1]}</span>
         </div>
-        {!this.state.interval && (
-          <Options
-            onSizeChange={this.handleSizeChange}
-            size={this.state.ball.radius}
-          />
-        )}
         <Paddle
           animate={this.state.animate[0]}
           player={true}
