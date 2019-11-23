@@ -66,9 +66,10 @@ export default class FaceAPI extends Component<IProps, IFaceAPIState> {
             }
             const dims = faceapi.matchDimensions(canvas, videoElement, true);
             const resizedResult = faceapi.resizeResults(detections, dims);
+            mirrorBox(resizedResult);
             if (resizedResult) {
                 faceapi.draw.drawDetections(canvas, resizedResult);
-                faceapi.draw.drawFaceExpressions(canvas, resizedResult, 0.05)
+                // faceapi.draw.drawFaceExpressions(canvas, resizedResult, 0.05)
             }
             let maxConfidenceEmotion = "neutral";
             let confidence = 0.0;
@@ -117,9 +118,51 @@ export default class FaceAPI extends Component<IProps, IFaceAPIState> {
 
         return <div style={this.props.noCenter ? {} : centerStyle} className={"webcam-component"}>
             <Row>
-                <video id={this.webcamId}></video>
-                <canvas style={{ position: "absolute", top: "0px", left: "0px" }} id={this.canvasId}></canvas>
+                <video style={{
+                    transform: "rotateY(180deg)"
+                    }} id={this.webcamId}></video>
+                <canvas style={{ position: "absolute", top: "0px", left: "0px"}} id={this.canvasId}></canvas>
             </Row>
         </div>
     }
+}
+
+
+const mirrorBox = (results: object) => {
+    const w = results['detection']['_imageDims']['width'];
+    const box = results['detection']['box'];
+
+    const mirrored = Object.assign({}, results);
+
+    const newBox = {
+        area: box.area,
+        bottom: box.bottom,
+        topLeft: {
+            x: w - box.x - box.width,
+            y: box.y,
+        },
+        topRight: {
+            x: w - box.x,
+            y: box.y,
+        },
+        bottomLeft: {
+            x: w - box.x - box.width,
+            y: box.y + box.height,
+        },
+        bottomRight: {
+            x: w - box.x,
+            y: box.y + box.height,
+        },
+        x: w - box.x - box.width,
+        y: box.y,
+        _x: w - box._x - box.width,
+        _y: box._y,
+        width: box.width,
+        height: box.height,
+        _width: box._width,
+        _height: box._height,
+    }
+
+    mirrored['detection']['_box'] = newBox;
+    return mirrored;
 }
