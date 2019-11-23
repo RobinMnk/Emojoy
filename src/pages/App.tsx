@@ -3,12 +3,11 @@ import '../App.css';
 import { Icon, Menu, Layout, Typography, notification } from 'antd';
 import { Info } from './Info';
 import Pong from './Pong/Pong';
-import FaceAPI, { Emotion } from "../components/faceapi";
+import { Emotion } from "../components/faceapi";
 import { PracticeEasy } from '../components/PracticeEasy';
 import { PracticeAdvanced } from '../components/PracticeAdvanced';
 const { Sider, Content } = Layout;
 const { SubMenu, Item } = Menu;
-const { Title } = Typography;
 
 
 interface IState {

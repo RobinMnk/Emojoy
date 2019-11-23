@@ -16,7 +16,6 @@ interface IState {
     correctness?: boolean;
 }
 
-
 export class PracticeEasy extends React.Component<IProps, IState> {
     constructor(props: Readonly<IProps>) {
         super(props);
@@ -49,7 +48,7 @@ export class PracticeEasy extends React.Component<IProps, IState> {
     render() {
         return <div style={{marginBottom: "30"}}>
             <Row type="flex" justify="center">
-                <Title>Learning Emotions</Title>
+                <Title>Forming Emotions</Title>
             </Row>
             {!this.state.started ? <div><Row type="flex" justify="center"><p>                
                 In this step you are going to practice emotional facial expressions. Press start and have fun!
@@ -82,7 +81,4 @@ export class PracticeEasy extends React.Component<IProps, IState> {
             }
         </div>
     }
-}
-const introductionText = () => {
-    return
 }

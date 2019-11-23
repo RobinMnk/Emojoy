@@ -9,7 +9,7 @@ const Waves = (props) => {
           left: wave.waveX + "%",
           width: radius + "%",
           height: radiusY + "%",
-          backgroundColor: wave.waveX == 2 ? "purple" : "yellow"
+          backgroundColor: wave.waveX === 2 ? "purple" : "yellow"
         };
         return <div key={"wave" + idx} className="wave wave__animate" style={style} />;
       });
