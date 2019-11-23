@@ -5,7 +5,6 @@ const { Title } = Typography;
 
 const SCORING_TYPE : 'fixed_time' | 'fixed_rows' = 'fixed_rows';
 const MAX_NUMBER_OF_ROWS = 3;
-const TIME_IN_SECONDS = 60;
 
 const centerStyle = {
     justifyContent: 'space-around',

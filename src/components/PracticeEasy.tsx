@@ -109,6 +109,3 @@ export class PracticeEasy extends React.Component<IProps, IState> {
         </div>
     }
 }
-const introductionText = () => {
-    return
-}

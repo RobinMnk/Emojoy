@@ -1,14 +1,12 @@
 import React from 'react';
 import '../App.css';
-import { Icon, Menu, Layout, Typography } from 'antd';
+import { Icon, Menu, Layout, } from 'antd';
 import { Info } from './Info';
 import Pong from './Pong/Pong';
-import FaceAPI from "../components/faceapi";
 import { PracticeEasy } from '../components/PracticeEasy';
 import { PracticeAdvanced } from '../components/PracticeAdvanced';
 const { Sider, Content } = Layout;
 const { SubMenu, Item } = Menu;
-const { Title } = Typography;
 
 
 interface IState {
