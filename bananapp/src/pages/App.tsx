@@ -44,7 +44,7 @@ class App extends React.Component<{}, IState> {
                 return <Info switchPage={p => this.switchPage(p)}/>;
             case 'pong':
                 return <Pong />;
-            case 'game':
+            case 'rps':
                 return <RockPaperScissors />;
             case 'practice1':
                 return (
@@ -116,8 +116,8 @@ class App extends React.Component<{}, IState> {
                 <Layout>
                     <Content
                         style={{
-                            margin: '16px',
-                            padding: 24,
+                            margin: this.state.currentPage === 'pong' ? 0 : '16px',
+                            padding: this.state.currentPage === 'pong' ? 0 : 24,
                             background: '#fff',
                             minHeight: 280,
                         }}

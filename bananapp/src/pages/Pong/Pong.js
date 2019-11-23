@@ -283,15 +283,23 @@ class Pong extends Component {
     if (this.state.isStarted === false) {
       this.handleRoundStart();
     }
+
+    const faceAPIstyle = {
+      position: 'absolute',
+      left: 'calc(50% - 125px)',
+      top: 'calc(100vh - 155px)',
+      width: '250px',
+      height: '150px'
+    }
+
+    const pongStyle = {
+      position: 'absolute',
+      width: '-webkit-fill-available'
+    }
+
     return (
-      <Row>
-        <Col span={16}>
-            <FaceAPI
-                setEmotion={em => this.emotionChange(em)}
-                noCenter={true}
-            />
-        </Col>
-        <Col span={16}>
+      <div style={{position: 'relative', margin: 0}}>
+        <div style={pongStyle}>
           <main
             className="main"
             onKeyDown={this.handleKeyDown}
@@ -312,8 +320,16 @@ class Pong extends Component {
             <Paddle animate={this.state.animate[1]} pos={this.state.opponentY} />
             <Waves waves={this.state.waves} />
           </main>
-        </Col>
-      </Row>
+        </div>
+        <div style={faceAPIstyle}>
+            <FaceAPI
+                setEmotion={em => this.emotionChange(em)}
+                noCenter={true}
+                width={250}
+                height={150}
+            />
+        </div>
+      </div>
     );
   }
 }
