@@ -1,6 +1,6 @@
 import React from 'react'
 import FaceAPI, { Emotion } from "./faceapi";
-import { Row, Col, Card, Typography, Button } from "antd";
+import { Row, Typography, Button } from "antd";
 const { Title } = Typography;
 
 interface IProps {
@@ -9,6 +9,7 @@ interface IProps {
 
 interface IState {
     started: boolean;
+    ready: boolean;
     currentEmotion?: Emotion;
     emotionTask?: Emotion;
     correctness?: boolean;
@@ -36,7 +37,7 @@ const emotion2emoji = (emotion: Emotion | undefined) => {
 export class PracticeEasy extends React.Component<IProps, IState> {
     constructor(props: Readonly<IProps>) {
         super(props);
-        this.state = { emotionTask: "neutral", correctness: false, started: false };
+        this.state = { emotionTask: "neutral", correctness: false, started: false, ready: false };
     }
     setEmotion(emotion: Emotion) {
         this.setState({
@@ -63,21 +64,33 @@ export class PracticeEasy extends React.Component<IProps, IState> {
         this.setState({ emotionTask: "neutral", correctness: true });
     }
     render() {
-        return <div>
-            {!this.state.started ? <div><p>
-                <Title>Expressing Emotions</Title>
+        return <div style={{marginBottom: "30"}}>
+            <Row type="flex" justify="center">
+                <Title>Learning Emotions</Title>
+            </Row>
+            {!this.state.started ? <div><Row type="flex" justify="center"><p>                
                 In this step you are going to practice emotional facial expressions. Press start and have fun!
                 </p>
-                <Button onClick={() => this.setState({ started: true })} type="primary">Start</Button>
+            </Row>
+                <Row type="flex" justify="center" >
+                    <Button
+                    onClick={() => this.setState({ started: true })}
+                    type="primary"
+                    loading={!this.state.ready}
+                    >{this.state.ready ? "Start" : "Loading"}</Button>
+                </Row>
             </div> : null
             }
             <Row>
-                <FaceAPI setEmotion={em => this.setEmotion(em)}></FaceAPI>
+                <FaceAPI
+                setEmotion={em => this.setEmotion(em)}
+                onRunning={() => this.setState({ready: true})}
+                ></FaceAPI>
             </Row>
             {this.state.started ? <div>
                 <Row type="flex" justify="space-around">
                     <Title>
-                        Task: {this.state.emotionTask} - {emotion2emoji(this.state.emotionTask)}
+                        Try to look {this.state.emotionTask} - {emotion2emoji(this.state.emotionTask)}
                     </Title>
                 </Row>
                 <Row type="flex" justify="center">
