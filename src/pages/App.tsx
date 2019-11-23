@@ -2,7 +2,7 @@ import React from 'react';
 import '../App.css';
 import { Icon, Menu, Layout, Typography } from 'antd';
 import { Info } from './Info';
-import { Game } from './Game';
+import Pong from './Pong/Pong';
 const { Sider, Content, Header } = Layout;
 const { SubMenu, Item } = Menu;
 const { Title } = Typography;
@@ -92,7 +92,7 @@ const renderContent = (key: string) => {
         case 'info':
             return <Info />;
         case 'game':
-            return <Game />;
+            return <Pong />;
         case 'practice1':
             return <p> Not Implemented Yet, Practice Scenario 1 </p>;
         case 'practice2':
