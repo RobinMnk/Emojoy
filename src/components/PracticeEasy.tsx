@@ -1,7 +1,7 @@
 import React from 'react'
 import FaceAPI, { Emotion } from "./faceapi";
-import { Row, Typography, Button } from "antd";
 import { emotion2emoji } from '../pages/App';
+import { Row, Typography, Button, notification } from "antd";
 const { Title } = Typography;
 
 interface IProps {
@@ -16,6 +16,35 @@ interface IState {
     correctness?: boolean;
 }
 
+const feedbackNotification = () => {
+    notification.open({
+        message: "NICE! 🙌",
+        duration: 1.5,
+        style: {
+            backgroundColor: "lightgreen"
+        }
+    })
+}
+const emotion2emoji = (emotion: Emotion | undefined) => {
+    switch (emotion) {
+        case "neutral":
+            return "😐";
+        case "happy":
+            return "😄";
+        case "sad":
+            return "😞";
+        case "surprised":
+            return "😯";
+        case "angry":
+            return "😠";
+        case "disgusted":
+            return "🤮";
+        case "fearful":
+            return "😬";
+        default:
+            return "😐";
+    }
+}
 export class PracticeEasy extends React.Component<IProps, IState> {
     constructor(props: Readonly<IProps>) {
         super(props);
@@ -29,7 +58,7 @@ export class PracticeEasy extends React.Component<IProps, IState> {
     }
     componentDidUpdate() {
         let newTask: Emotion;
-        if (this.state.correctness) {
+        if (this.state.correctness && this.state.started) {
             if (this.state.emotionTask === "neutral") {
                 const emotions: Emotion[] = ['happy', 'sad', 'surprised', 'angry'];
                 newTask = emotions[Math.floor((Math.random() * emotions.length))]
@@ -37,9 +66,9 @@ export class PracticeEasy extends React.Component<IProps, IState> {
                 newTask = "neutral";
             }
             console.log(`Switching from ${this.state.emotionTask} to ${newTask}`)
-            setTimeout(() => {
-                this.setState({ emotionTask: newTask, correctness: false })
-            }, 1)
+            feedbackNotification()
+            this.setState({ emotionTask: newTask, correctness: false })
+            
         }
     }
     shuffle() {
