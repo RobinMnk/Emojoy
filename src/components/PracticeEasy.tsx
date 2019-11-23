@@ -28,7 +28,7 @@ const emotion2emoji = (emotion: Emotion | undefined) => {
             return "😠";
         case "disgusted":
             return "🤮";
-        case "feared":
+        case "fearful":
             return "😬";
         default:
             return "😐";
