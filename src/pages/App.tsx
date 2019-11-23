@@ -3,9 +3,13 @@ import '../App.css';
 import { Icon, Menu, Layout, Typography } from 'antd';
 import { Info } from './Info';
 import Pong from './Pong/Pong';
+import FaceAPI from "../components/faceapi";
+import { PracticeEasy } from '../components/PracticeEasy';
+import { PracticeAdvanced } from '../components/PracticeAdvanced';
 const { Sider, Content, Header } = Layout;
 const { SubMenu, Item } = Menu;
 const { Title } = Typography;
+
 
 interface IState {
     collapsed: boolean;
@@ -94,9 +98,17 @@ const renderContent = (key: string) => {
         case 'game':
             return <Pong />;
         case 'practice1':
-            return <p> Not Implemented Yet, Practice Scenario 1 </p>;
+            return (
+                <PracticeEasy
+
+                />
+            );
         case 'practice2':
-            return <p> Not Implemented Yet, Practice Scenario 2 </p>;
+            return (
+                <PracticeAdvanced
+
+                />
+            );
         case 'practice3':
             return <p> Not Implemented Yet, Practice Scenario 3 </p>;
     }
