@@ -2,7 +2,9 @@ import React from 'react';
 import '../App.css';
 import { Icon, Menu, Layout, Typography } from 'antd';
 import { Info } from './Info';
-import FaceAPI from "./faceapi";
+import FaceAPI from "../components/faceapi";
+import { PracticeEasy } from '../components/practiceEasy';
+import { PracticeAdvanced } from '../components/practiceAdvanced';
 const { Sider, Content, Header } = Layout;
 const { SubMenu, Item } = Menu;
 const { Title } = Typography;
@@ -93,11 +95,23 @@ const renderContent = (key: string) => {
         case 'info':
             return <Info />;
         case 'game':
-            return <FaceAPI></FaceAPI>;
+            return (
+                <FaceAPI 
+                    setEmotion={em => console.log(em)}
+                ></FaceAPI>)
+            ;
         case 'practice1':
-            return <p> Not Implemented Yet, Practice Scenario 1 </p>;
+            return (
+                <PracticeEasy
+
+                />
+            );
         case 'practice2':
-            return <p> Not Implemented Yet, Practice Scenario 2 </p>;
+            return (
+                <PracticeAdvanced
+
+                />
+            );
         case 'practice3':
             return <p> Not Implemented Yet, Practice Scenario 3 </p>;
     }

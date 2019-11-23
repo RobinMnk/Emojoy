@@ -8,16 +8,27 @@ const centerStyle = {
     display: 'flex'
 };
 
-interface IFaceAPIState {
-    emotion?: string;
-    ready: boolean;
-    started: boolean;
+type Emotion = 'neutral' | 'happy' | 'sad' | 'suprised' | 'angry' | 'disgusted' | 'feared'
+
+interface IProps {
+    setEmotion(em: Emotion): void;
 }
 
-export default class FaceAPI extends Component<{}, IFaceAPIState> {
+interface IFaceAPIState {
+    ready: boolean;
+    started: boolean;
+    emotion?: string;
+}
+
+/** USAGE:
+ *  <FaceAPI
+ *      setEmotion={em => handleEmotionChange(em)}
+ *  />
+ */
+export default class FaceAPI extends Component<IProps, IFaceAPIState> {
     webcamId: string = "webcam";
     canvasId: string = "overlay";
-    constructor(props: {}) {
+    constructor(props: Readonly<IProps>) {
         super(props);
         this.state = { ready: false, started: false };
     }
@@ -50,12 +61,12 @@ export default class FaceAPI extends Component<{}, IFaceAPIState> {
                     confidence = newConfidence;
                 }
             }
-            console.log(maxConfidenceEmotion);
             if (this.state.emotion !== maxConfidenceEmotion) {
-                this.setState({ emotion: maxConfidenceEmotion })
+                this.setState({ emotion: maxConfidenceEmotion });
+                this.props.setEmotion(maxConfidenceEmotion as Emotion);
             }
         }
-        setTimeout(() => this.applyModel(videoElement, canvas))
+        setTimeout(() => this.applyModel(videoElement, canvas), 50);
     }
 
     async startModel() {
