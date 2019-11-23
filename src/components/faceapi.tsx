@@ -8,14 +8,17 @@ const centerStyle = {
     display: 'flex'
 };
 
-type Emotion = 'neutral' | 'happy' | 'sad' | 'suprised' | 'angry' | 'disgusted' | 'feared'
+export type Emotion = 'neutral' | 'happy' | 'sad' | 'surprised' | 'angry' | 'disgusted' | 'feared'
 
 interface IProps {
     setEmotion(em: Emotion): void;
+    onRunning?(): void;
+    noCenter?: boolean;
 }
 
 interface IFaceAPIState {
     ready: boolean;
+    running: boolean;
     started: boolean;
     emotion?: string;
 }
@@ -30,7 +33,7 @@ export default class FaceAPI extends Component<IProps, IFaceAPIState> {
     canvasId: string = "overlay";
     constructor(props: Readonly<IProps>) {
         super(props);
-        this.state = { ready: false, started: false };
+        this.state = { ready: false, started: false, running: false };
     }
 
     async loadModel() {
@@ -47,6 +50,12 @@ export default class FaceAPI extends Component<IProps, IFaceAPIState> {
         if (!detections) {
             console.log("Detections are undefined :-( Model is not ready yet?")
         } else {
+            if(!this.state.running) {
+                if(this.props.onRunning){
+                    this.props.onRunning();
+                }
+                this.setState({running: true});
+            }
             const dims = faceapi.matchDimensions(canvas, videoElement, true);
             const resizedResult = faceapi.resizeResults(detections, dims);
             if (resizedResult) {
@@ -89,7 +98,7 @@ export default class FaceAPI extends Component<IProps, IFaceAPIState> {
         }
     }
     render() {
-        return <div style={centerStyle} className={"webcam-component"}>
+        return <div style={this.props.noCenter ? {} : centerStyle} className={"webcam-component"}>
             <Row>
                 <video id={this.webcamId}></video>
                 <canvas style={{ position: "absolute", top: "0px", left: "0px" }} id={this.canvasId}></canvas>
