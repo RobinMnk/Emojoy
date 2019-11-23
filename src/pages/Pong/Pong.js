@@ -24,8 +24,8 @@ class Pong extends Component {
         animId: 0,
         ballX: 50,
         ballY: 50,
-        ballSpeedX: 0.4,
-        ballSpeedY: 0.2,
+        ballSpeedX: 0.8,
+        ballSpeedY: 0.6,
         radius: 4
       }
     };
@@ -42,19 +42,22 @@ class Pong extends Component {
   handlePlayerMove = () => {
     let yPercent = 0;
     if (this.state.keyPressed === "down") {
-      yPercent = this.state.playerY - 1;
-    } else if (this.state.keyPressed === "up") {
       yPercent = this.state.playerY + 1;
+    } else if (this.state.keyPressed === "up") {
+      yPercent = this.state.playerY - 1;
+    } else {
+      yPercent = this.state.playerY;
     }
     if (yPercent <= 0) {
       yPercent = 0;
     } else if (yPercent > 80) {
       yPercent = 80;
     }
-    this.handleRoundStart()
+    // this.handleRoundStart()
     this.setState({
-      playerY: yPercent,
+      playerY: yPercent
     });
+    setTimeout(() => this.handlePlayerMove(), 200);
   };
 
   handleKeyDown = event => {
@@ -267,6 +270,8 @@ class Pong extends Component {
       direction = "down";
     } else if (em === 'happy') {
       direction = "up";
+    } else if (em === 'neutral'){
+      direction = "";
     }
     console.log(direction)
     this.setState({
@@ -275,6 +280,9 @@ class Pong extends Component {
   }
 
   render() {
+    if (this.state.isStarted === false) {
+      this.handleRoundStart();
+    }
     return (
       <Row>
         <Col span={16}>
