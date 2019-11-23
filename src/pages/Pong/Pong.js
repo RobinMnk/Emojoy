@@ -17,6 +17,7 @@ class Pong extends Component {
       opponentY: 40,
       playerSpeed: 10,
       interval: null,
+      keyPressed: "",
       ball: {
         animId: 0,
         ballX: 50,
@@ -36,18 +37,36 @@ class Pong extends Component {
     });
   };
 
-  handlePlayerMove = event => {
-    let yPercent = 0
-    event.preventDefault();
-    if (event.keyCode === 38) {
+  handlePlayerMove = () => {
+    let yPercent = 0;
+    if (this.state.keyPressed === "down") {
       yPercent = this.state.playerY - 1;
-    } else if (event.keyCode === 40) {
+    } else if (this.state.keyPressed === "up") {
       yPercent = this.state.playerY + 1;
     }
+    if (yPercent <= 0) {
+      yPercent = 0;
+    } else if (yPercent > 80) {
+      yPercent = 80;
+    }
+    this.handleRoundStart()
     this.setState({
       playerY: yPercent,
     });
   };
+
+  handleKeyDown = event => {
+    event.preventDefault()
+    let direction = "";
+    if (event.keyCode === 38) {
+      direction = "down";
+    } else if (event.keyCode === 40) {
+      direction = "up";
+    }
+    this.setState({
+      keyPressed: direction
+    }, this.handlePlayerMove);
+  }
 
   handleSizeChange = event => {
     const ball = { ...this.state.ball, radius: event.target.value / 10 };
@@ -243,17 +262,13 @@ class Pong extends Component {
     return (
       <main
         className="main"
-        onClick={this.handleRoundStart}
-        onKeyDown={this.handlePlayerMove}
+        onKeyDown={this.handleKeyDown}
         tabIndex="0"
         ref="main"
       >
         <Board />
         <div className="score">
           <span>{this.state.score[0]}</span>
-          {!this.state.interval && (
-            <span style={{ fontSize: "30px" }}>Left Click To Start</span>
-          )}
           <span>{this.state.score[1]}</span>
         </div>
         <Paddle
