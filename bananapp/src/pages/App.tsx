@@ -155,8 +155,8 @@ class App extends React.Component<{}, IState> {
                 <Layout>
                     <Content
                         style={{
-                            margin: this.state.currentPage === 'pong' ? 0 : '16px',
-                            padding: this.state.currentPage === 'pong' ? 0 : 24,
+                            margin: this.state.currentPage === 'pong' || this.state.currentPage === 'pong_mult' ? 0 : '16px',
+                            padding: this.state.currentPage === 'pong' || this.state.currentPage === 'pong_mult' ? 0 : 24,
                             background: '#fff',
                             minHeight: 280,
                         }}

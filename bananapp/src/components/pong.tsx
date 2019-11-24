@@ -40,7 +40,7 @@ export default class PongCanvas extends Component<{}, { waitingForFaceAPI: boole
   startRound() {
     if (Pong.running === false) {
       Pong.running = true;
-      window.requestAnimationFrame(Pong.loop);
+      window.requestAnimationFrame(() => Pong.loop('A', undefined, false));
     }
     this.setState({
       bv: false

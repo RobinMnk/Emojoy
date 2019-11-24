@@ -144,6 +144,8 @@ export default class MPPong extends Component<any, State> {
       justifyContent: 'space-around',
       // flexDirection: isReverse ? 'row-reverse' : 'row', FlexDirectionProper
       display: 'flex',
+      bottom: 0,
+      margin: '0 20%',
     };
     const videoContainer = {
       top: 'calc(100vh - 160px)',
@@ -162,7 +164,7 @@ export default class MPPong extends Component<any, State> {
     return (
       <div>
         <div style={{position: 'relative', margin: 0}}>
-        <div id={'pongDiv'} style={Object.assign(pongStyle, {position: 'absolute'})}>
+        <div id={'pongDiv'} style={Object.assign(pongStyle, {position: 'absolute', width: '-webkit-fill-available'})}>
           <div style={videoContainer}>
             <div style={Object.assign({flexDirection: isReverse ? 'row-reverse' : 'row', position: 'absolute', width: '-webkit-fill-available'}, centerStyle)}>
               <div style={Object.assign(video1, {position: 'relative'})}>
@@ -176,23 +178,17 @@ export default class MPPong extends Component<any, State> {
                 />
               </div>
               <div style={Object.assign(video2, {position: 'relative'})}>
-                <video id='enemy' width="250" height="150"></video>
+                <video id='enemy' width="250" height="150" style={{transform: 'rotateY(180deg)'}}></video>
               </div>
-                {/* <div>
-                  <video></video>
-                </div>
-                <div>
-                  <video></video>
-                </div> */}
             </div>
           </div>
           <canvas id='pong'></canvas>
         </div>
-        {Pong.running ? null : (
+        {this.state.state !== 'start' && (
           <div style={centerStyle}>
             <div style={{ top: 'calc(50vh - 16px)', position: 'absolute' }}>
               <Button
-                hidden={this.state.state === 'start'}
+                // hidden={this.state.state === 'start'}
                 icon = 'play-circle'
                 type='primary'
                 // onClick={ _ => this.onFindPlayer()}

@@ -83,12 +83,12 @@ var Game = {
 		Pong.context.fillStyle = this.color;
 
 		// Draw the rectangle behind the 'Press any key to begin' text.
-		Pong.context.fillRect(
-			Pong.canvas.width / 2 - 350,
-			Pong.canvas.height / 2 - 48,
-			700,
-			100
-		);
+		// Pong.context.fillRect(
+		// 	Pong.canvas.width / 2 - 350,
+		// 	Pong.canvas.height / 2 - 48,
+		// 	700,
+		// 	100
+		// );
 
 		// Change the canvas color;
 		Pong.context.fillStyle = '#ffffff';
@@ -118,21 +118,21 @@ var Game = {
 		this.context.fillStyle = this.color;
 
 		// Draw the rectangle behind the 'Press any key to begin' text.
-		this.context.fillRect(
-			this.canvas.width / 2 - 350,
-			this.canvas.height / 2 - 48,
-			700,
-			100
-		);
+		// this.context.fillRect(
+		// 	this.canvas.width / 2 - 350,
+		// 	this.canvas.height / 2 - 48,
+		// 	700,
+		// 	100
+		// );
 
 		// Change the canvas color;
 		this.context.fillStyle = '#ffffff';
 
 		// Draw the 'press any key to begin' text
-		this.context.fillText('', // Press any key to begin
-			this.canvas.width / 2,
-			this.canvas.height / 2 + 15
-		);
+		// this.context.fillText('', // Press any key to begin
+		// 	this.canvas.width / 2,
+		// 	this.canvas.height / 2 + 15
+		// );
 	},
 
 	// Update all objects (move the player, paddle, ball, increment the score, etc.)
