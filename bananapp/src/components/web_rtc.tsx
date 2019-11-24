@@ -14,11 +14,6 @@ interface IFaceAPIState {
 
 export default class WebRtc extends Component<{}, IFaceAPIState> {
     connection: Connection
-
-    constructor(props: {}) {
-        super(props); 
-    }
-      
     async componentDidMount() {
       const stream = await navigator.mediaDevices.getUserMedia({ video: true });
       this.connection = new Connection(this.onStream, stream, () => {})

@@ -100,8 +100,3 @@ export default class PongCanvas extends Component<{}, { waitingForFaceAPI: boole
       )
   }
 }
-
-
-const styles = {
-
-}

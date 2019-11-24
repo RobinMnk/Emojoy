@@ -78,7 +78,7 @@ export class Connection {
   handleSignal = (data: any) => {
     console.log('in signal')
     const ws = this.ws
-    if (ws && (data.type == 'answer' || data.type === 'offer')) {
+    if (ws && (data.type === 'answer' || data.type === 'offer')) {
       console.log('in signal if')
       ws.send(JSON.stringify({
         id: this.getId(),
@@ -95,7 +95,6 @@ export class Connection {
     } else if (!message.signal) {
       console.log('no offer in payload')
     } else {
-      const ws = this.ws
       this.peer = new Peer()
       this.peer.on('signal', this.handleSignal)
       this.peer.on('stream', this.onStream)
