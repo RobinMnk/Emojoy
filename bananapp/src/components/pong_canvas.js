@@ -1,3 +1,11 @@
+/**
+ * SOURCE: 	https://codepen.io/gdube/pen/JybxxZ
+ * AUTHOR: Gabriel Dube
+ * We did edit a few functions
+ */
+
+
+
 // Global Variables
 export const DIRECTION = {
 	IDLE: 0,
@@ -202,6 +210,27 @@ var Game = {
 			}
 		}
 
+		
+		if (gamestateCB) {
+			gamestateCB({
+				type: 'state',
+				ball: {
+					x: this.ball.x,
+					y: this.ball.y,
+				},
+				player: {
+					y: this.player.y,
+					score: this.player.score,
+				},
+				paddle: {
+					y: this.paddle.y,
+					score: this.paddle.score,
+				}
+			})
+		}
+	},
+
+	updateBoth: function () {
 		// Handle the end of round transition
 		// Check to see if the player won the round.
 		if (this.player.score === rounds[this.round]) {
@@ -226,21 +255,6 @@ var Game = {
 		else if (this.paddle.score === rounds[this.round]) {
 			this.over = true;
 			setTimeout(function () { Pong.endGameMenu('Game Over!'); }, 1000);
-		}
-		if (gamestateCB) {
-			gamestateCB({
-				type: 'state',
-				ball: {
-					x: this.ball.x,
-					y: this.ball.y,
-				},
-				player: {
-					y: this.player.y,
-				},
-				paddle: {
-					y: this.paddle.y,
-				}
-			})
 		}
 	},
 
@@ -352,6 +366,7 @@ var Game = {
 		if (player === 'A') {
 			Pong.update(gamestateCB, isMultiplayer);
 		}
+		Pong.updateBoth()
 		Pong.draw();
 
 		// If the game is not over, draw the next frame.

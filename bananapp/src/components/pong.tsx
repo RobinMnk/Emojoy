@@ -59,7 +59,6 @@ export default class PongCanvas extends Component<{}, { waitingForFaceAPI: boole
     }
 
     const pongStyle = {
-      // position: 'absolute',
       width: '100vh',
       height: '100vh',
       left: 0,

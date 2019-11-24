@@ -10,6 +10,7 @@ interface Message {
 interface Coords {
   x?: number,
   y: number
+  score?: number
 }
 
 export interface RTCGameState {
