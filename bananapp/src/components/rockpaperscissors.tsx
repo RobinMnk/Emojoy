@@ -1,8 +1,13 @@
 import React from 'react'
 import FaceAPI, { Emotion } from "./faceapi";
-import { Row, Typography, Button, Col } from "antd";
-import { emotion2emoji } from '../pages/App';
+import { Row, Typography, Button, Col, Table } from "antd";
 const { Title } = Typography;
+
+const centerStyle = {
+    justifyContent: 'space-around', 
+    display: 'flex',
+    fontSize: 30,
+};
 
 interface IProps {
 
@@ -18,6 +23,27 @@ interface IState {
     victory?: number;
     initialRun?: boolean;
     remainingTime?: number;
+}
+
+const emotion2emoji = (emotion: Emotion | undefined) => {
+    switch (emotion) {
+        case "neutral":
+            return "😐";
+        case "happy":
+            return "😄";
+        case "sad":
+            return "😞";
+        case "surprised":
+            return "😯";
+        case "angry":
+            return "😠";
+        case "disgusted":
+            return "🤮";
+        case "fearful":
+            return "😬";
+        default:
+            return "😐";
+    }
 }
 
 type GameChoice = "rock" | "paper" | "scissors" | ""
@@ -74,6 +100,39 @@ const playerWon = (player: GameChoice, bot: GameChoice) => {
     }
 }
 
+const legenddata = [
+    {
+        rock: emotion2emoji('angry'),
+        paper: emotion2emoji('happy'),
+        scissors: emotion2emoji('surprised'),
+    }
+];
+
+const columnData = [
+    {
+        title: <Title level={3}>Rock</Title>,
+        key: 'rock',
+        dataIndex: 'rock',
+        render: (x: any) => renderCenter(x),
+    },
+    {
+        title: <Title level={3}>Paper</Title>,
+        key: 'paper',
+        dataIndex: 'paper',
+        render: (x: any) => renderCenter(x),
+    },
+    {
+        title: <Title level={3}>Scissors</Title>,
+        key: 'scissors',
+        dataIndex: 'scissors',
+        render: (x: any) => renderCenter(x),
+    }
+];
+
+const renderCenter = (x: any) => (
+    <div style={centerStyle}>{x}</div>
+);
+
 export class RockPaperScissors extends React.Component<IProps, IState> {
     constructor(props: Readonly<IProps>) {
         super(props);
@@ -109,7 +168,8 @@ export class RockPaperScissors extends React.Component<IProps, IState> {
         if (this.state.victory === 1) {
             return "You won!!!"
         } else if (this.state.victory === 0) {
-            return "Looks like you have to play again"
+            // return "Looks like you have to play again"
+            return 'Tie!'
         } else {
             return "You lost!"
         }
@@ -117,54 +177,68 @@ export class RockPaperScissors extends React.Component<IProps, IState> {
     render() {
         return <div>
             <Row type="flex" justify="center">
-                <Title>Rock {emotion2emoji("angry")}Paper{emotion2emoji("happy")}Scissors{emotion2emoji("surprised")}</Title>
+                {/* <Title>Rock {emotion2emoji("angry")}Paper{emotion2emoji("happy")}Scissors{emotion2emoji("surprised")}</Title> */}
+                
+                <Col span={10}>
+                    <div style={{ display: "flex", justifyContent:"space-around" }}>
+                        <Table
+                            dataSource={legenddata}
+                            columns={columnData}
+                            pagination={false}
+                            size={'small'}
+                            bordered={true}
+                        />
+                    </div>
+                </Col>
+                <Col span={14}>
+                    <div style={{ display: "flex", justifyContent:"space-around" }}>
+                        {
+                        !this.state.ended ?  (
+                            <Title>
+                                Your current choice {choice2symbol(this.state.currentChoice)}
+                            </Title>) : (<Title>
+                                    Your choice was {choice2symbol(this.state.lastChoice)}
+                                </Title>)
+                        }
+                    </div>
+                    <div>
+                        {this.state.started ?
+                            <div style={{ display: "flex", justifyContent:"space-around" }}>
+                                <Title level={4}>
+                                    Remaining Time {this.state.remainingTime}
+                                </Title>
+                            </div> : null }
+                    </div>
+                    {!this.state.started ? <div><Row type="flex" justify="center"><p>
+                    </p>
+                    </Row>
+                        <Row type="flex" justify="center" >
+                            <Button
+                                onClick={() => this.restart()}
+                                type="primary"
+                                loading={!this.state.ready}
+                            >{this.state.ready ? `Start ${this.state.ended ? 'again' : ''}` : "Loading"}</Button>
+                        </Row>
+                    </div> : null
+                    }
+                </Col>
             </Row>
-            <Row type="flex" justify="space-around">
-                {
-                    !this.state.ended ? <Title>
-                        Your current choice {choice2symbol(this.state.currentChoice)}
-                    </Title> : <Title>
-                            Your choice was {choice2symbol(this.state.lastChoice)}
-                        </Title>
-                }
-            </Row>
-
-            {this.state.started ? <div>
-                <Row type="flex" justify="space-around">
-                    <Title>
-                        Remaining Time {this.state.remainingTime}
-                    </Title>
-                </Row>
-            </div> : null
-            }
             {this.state.ended ? <div>
                 <Row type="flex" justify="space-around">
                     <Col>
-                        <Title>
-                            The bot has chosen {choice2symbol(this.state.botChoice)}
+                        <Title level={3}>
+                        {this.victoryText()} - The bot {this.victoryText() === 'Tie!' ? 'also' : ''} chose {choice2symbol(this.state.botChoice)}
                         </Title>
                     </Col>
                 </Row>
-                <Row type="flex" justify="space-around">
+                {/* <Row type="flex" justify="space-around">
                     <Title>
                         {this.victoryText()}
                     </Title>
-                </Row>
+                </Row> */}
             </div> : null
             }
-            {!this.state.started ? <div><Row type="flex" justify="center"><p>
-            </p>
-            </Row>
-                <Row type="flex" justify="center" >
-                    <Button
-                        onClick={() => this.restart()}
-                        type="primary"
-                        loading={!this.state.ready}
-                    >{this.state.ready ? "Start" : "Loading"}</Button>
-                </Row>
-            </div> : null
-            }
-            <Row>
+            <Row style={{marginTop: 20}}>
                 <FaceAPI
                     setEmotion={em => this.setEmotion(em)}
                     onRunning={() => this.setState({ ready: true })}

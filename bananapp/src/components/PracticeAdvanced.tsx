@@ -116,9 +116,12 @@ export class PracticeAdvanced extends React.Component<IProps, IState> {
         if(this.state.phase === 'info') {
             return (
                 <div>
-                    <Title>Transition Challenge</Title>
+                    <Title>Transition Game</Title>
                     {/* <p> Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gube ... </p> */}
-                    <p>  </p>
+                    <p> Here you can practice the transitions between expressions. </p>
+                    <p> Try to form every expression from the table on the right. Once you completed every
+                        face, you advance to the next round and go again. You will play three rounds. </p>
+                    <p>Have Fun!</p>
 
                     <div style={{ justifyContent: 'space-around', display: 'flex' }}>
                         <Button
