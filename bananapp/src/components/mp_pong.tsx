@@ -11,7 +11,7 @@ interface State {
   bv: boolean,
   state: FlowState,
 }
-export default class MPPong extends Component<{}, State> {
+export default class MPPong extends Component<any, State> {
   pong: any
   connection: Connection | any
   stream: MediaStream
@@ -117,9 +117,17 @@ export default class MPPong extends Component<{}, State> {
   }
 
   render() {
-    const video = {
-      left: 'calc(50vw - 125px - 84px)',
-      top: 'calc(100vh - 160px)',
+    const video1 = {
+      // left: 'calc(50vw - 125px - 84px)',
+      // top: 'calc(100vh - 160px)',
+      width: '250px',
+      height: '150px',
+      // flexDirection: 'column'
+    }
+
+    const video2 = {
+      // left: 'calc(50vw + 125px - 84px)',
+      // top: 'calc(100vh - 160px)',
       width: '250px',
       height: '150px',
       // flexDirection: 'column'
@@ -132,10 +140,15 @@ export default class MPPong extends Component<{}, State> {
       left: 0,
       top: 0,
     }
+    const isReverse = this.connection ? this.connection.player === 'B' : false
     const centerStyle = {
       justifyContent: 'space-around',
+      // flexDirection: isReverse ? 'row-reverse' : 'row', FlexDirectionProper
       display: 'flex',
     };
+    const videoContainer = {
+      top: 'calc(100vh - 160px)',
+    }
 
     let status;
     switch(this.state.state) {
@@ -151,21 +164,29 @@ export default class MPPong extends Component<{}, State> {
       <div>
         <div style={{position: 'relative', margin: 0}}>
         <div id={'pongDiv'} style={Object.assign(pongStyle, {position: 'absolute'})}>
-        <div style={centerStyle}>
-          <div style={Object.assign(video, {position: 'relative'})}>
-            <FaceAPI
-                setEmotion={em => this.handleEmotion(em)}
-                onRunning={this.onFindPlayer}
-                onVideoStream={this.onVideoStream}
-                noCenter={true}
-                width={250}
-                height={150}
-            />
-            <div style={Object.assign(video, {position: 'relative'})}>
-              <video id='enemy'></video>
+          <div style={videoContainer}>
+            <div style={Object.assign({flexDirection: isReverse ? 'row-reverse' : 'row', position: 'absolute', width: '-webkit-fill-available'}, centerStyle)}>
+              <div style={Object.assign(video1, {position: 'relative'})}>
+                <FaceAPI
+                    setEmotion={em => this.handleEmotion(em)}
+                    onRunning={this.onFindPlayer}
+                    onVideoStream={this.onVideoStream}
+                    noCenter={true}
+                    width={250}
+                    height={150}
+                />
+              </div>
+              <div style={Object.assign(video2, {position: 'relative'})}>
+                <video id='enemy' width="250" height="150"></video>
+              </div>
+                {/* <div>
+                  <video></video>
+                </div>
+                <div>
+                  <video></video>
+                </div> */}
             </div>
           </div>
-        </div>
           <canvas id='pong'></canvas>
         </div>
         {Pong.running ? null : (
