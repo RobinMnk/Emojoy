@@ -2,20 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9505bc99-f292-4d24-9001-99c860a1d46a" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bananapp/public/.robots.txt.icloud" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bananapp/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/bananapp/public/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bananapp/public/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/bananapp/public/manifest.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bananapp/src/.App.test.tsx.icloud" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bananapp/src/.App.tsx.icloud" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bananapp/src/components/PracticeAdvanced.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bananapp/src/components/PracticeAdvanced.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bananapp/src/components/pong.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bananapp/src/components/pong.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bananapp/src/components/pong_canvas.js" beforeDir="false" afterPath="$PROJECT_DIR$/bananapp/src/components/pong_canvas.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bananapp/src/components/rockpaperscissors.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bananapp/src/components/rockpaperscissors.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bananapp/src/components/web_rtc.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bananapp/src/components/web_rtc.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bananapp/src/pages/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bananapp/src/pages/App.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bananapp/src/services/connection.ts" beforeDir="false" afterPath="$PROJECT_DIR$/bananapp/src/services/connection.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bananapp/src/util/util.ts" beforeDir="false" afterPath="$PROJECT_DIR$/bananapp/src/util/util.ts" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -28,18 +15,16 @@
     <option name="delegatedBuild" value="true" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/bananapp/src/components/pong_canvas.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-4862" />
-          </provider>
+          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/bananapp/src/components/pong.tsx">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="365">
+            <state relative-caret-position="360">
               <caret line="27" column="21" selection-start-line="27" selection-start-column="21" selection-end-line="27" selection-end-column="21" />
               <folding>
                 <element signature="e#0#41#0" expanded="true" />
@@ -51,7 +36,7 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/bananapp/src/pages/App.tsx">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="224">
+            <state relative-caret-position="281">
               <caret line="58" column="31" selection-start-line="58" selection-start-column="31" selection-end-line="58" selection-end-column="31" />
               <folding>
                 <element signature="e#0#26#0" expanded="true" />
@@ -97,6 +82,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -108,7 +94,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
       <pane id="PackagesPane" />
     </panes>
   </component>
@@ -123,7 +108,7 @@
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="ts.external.directory.path" value="$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external" />
+    <property name="ts.external.directory.path" value="$PROJECT_DIR$/bananapp/node_modules/typescript/lib" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -188,17 +173,18 @@
       <updated>1574532688938</updated>
       <workItem from="1574532692410" duration="443000" />
       <workItem from="1574541566589" duration="1139000" />
+      <workItem from="1574567700750" duration="227000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1671000" />
+    <option name="totallyTimeSpent" value="1898000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="877" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25679544" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.26037195" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -236,9 +222,12 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/services/connection.ts" />
     <entry file="file://$PROJECT_DIR$/.gitignore" />
+    <entry file="file://$PROJECT_DIR$/bananapp/src/components/pong_canvas.js">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/bananapp/src/components/pong.tsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="365">
+        <state relative-caret-position="360">
           <caret line="27" column="21" selection-start-line="27" selection-start-column="21" selection-end-line="27" selection-end-column="21" />
           <folding>
             <element signature="e#0#41#0" expanded="true" />
@@ -248,7 +237,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/bananapp/src/pages/App.tsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="224">
+        <state relative-caret-position="281">
           <caret line="58" column="31" selection-start-line="58" selection-start-column="31" selection-end-line="58" selection-end-column="31" />
           <folding>
             <element signature="e#0#26#0" expanded="true" />
