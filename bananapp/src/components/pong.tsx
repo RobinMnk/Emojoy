@@ -13,7 +13,6 @@ export default class PongCanvas extends Component {
   }
 
   handleEmotion(em: Emotion) {
-    console.log(em)
     const pong = Pong
     if (!pong) {
       console.log('no pong canvas')

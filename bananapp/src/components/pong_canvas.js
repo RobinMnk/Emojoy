@@ -124,7 +124,7 @@ var Game = {
 	},
 
 	// Update all objects (move the player, paddle, ball, increment the score, etc.)
-	update: function () {
+	update: function (gamestateCB, isMultiplayer) {
 		if (!this.over) {
 			// If the ball collides with the bound limits - correct the x and y coords.
 			if (this.ball.x <= 0) Pong._resetTurn.call(this, this.paddle, this.player);
@@ -156,14 +156,19 @@ var Game = {
 			else if (this.ball.moveX === DIRECTION.RIGHT) this.ball.x += this.ball.speed;
 
 			// Handle paddle (AI) UP and DOWN movement
-			if (this.paddle.y > this.ball.y - (this.paddle.height / 2)) {
-				if (this.ball.moveX === DIRECTION.RIGHT) this.paddle.y -= this.paddle.speed / 1.5;
-				else this.paddle.y -= this.paddle.speed / 4;
-			}
-			if (this.paddle.y < this.ball.y - (this.paddle.height / 2)) {
-				if (this.ball.moveX === DIRECTION.RIGHT) this.paddle.y += this.paddle.speed / 1.5;
-				else this.paddle.y += this.paddle.speed / 4;
-			}
+      if (isMultiplayer) {
+        if (this.paddle.move === DIRECTION.UP) this.paddle.y -= this.paddle.speed;
+        else if (this.paddle.move === DIRECTION.DOWN) this.paddle.y += this.paddle.speed;
+      } else {
+        if (this.paddle.y > this.ball.y - (this.paddle.height / 2)) {
+          if (this.ball.moveX === DIRECTION.RIGHT) this.paddle.y -= this.paddle.speed / 1.5;
+          else this.paddle.y -= this.paddle.speed / 4;
+        }
+        if (this.paddle.y < this.ball.y - (this.paddle.height / 2)) {
+          if (this.ball.moveX === DIRECTION.RIGHT) this.paddle.y += this.paddle.speed / 1.5;
+          else this.paddle.y += this.paddle.speed / 4;
+        }
+      }
 
 			// Handle paddle (AI) wall collision
 			if (this.paddle.y >= this.canvas.height - this.paddle.height) this.paddle.y = this.canvas.height - this.paddle.height;
@@ -214,6 +219,21 @@ var Game = {
 		else if (this.paddle.score === rounds[this.round]) {
 			this.over = true;
 			setTimeout(function () { Pong.endGameMenu('Game Over!'); }, 1000);
+		}
+		if (gamestateCB) {
+			gamestateCB({
+				type: 'state',
+				ball: {
+					x: this.ball.x,
+					y: this.ball.y,
+				},
+				player: {
+					y: this.player.y,
+				},
+				paddle: {
+					y: this.paddle.y,
+				}
+			})
 		}
 	},
 
@@ -315,12 +335,14 @@ var Game = {
 		);
 	},
 
-	loop: function () {
-		Pong.update();
+	loop: function (player, gamestateCB, isMultiplayer) {
+		if (player === 'A') {
+			Pong.update(gamestateCB, isMultiplayer);
+		}
 		Pong.draw();
 
 		// If the game is not over, draw the next frame.
-		if (!Pong.over) requestAnimationFrame(Pong.loop);
+		if (!Pong.over) requestAnimationFrame(() => Pong.loop(player, gamestateCB, isMultiplayer));
 	},
 
 	listen: function () {

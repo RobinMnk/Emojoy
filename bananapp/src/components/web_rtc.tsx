@@ -31,9 +31,6 @@ export default class WebRtc extends Component<{}, IFaceAPIState> {
       const video = document.getElementById('playback') as HTMLMediaElement
       video.srcObject = stream
       video.play()
-      setTimeout(() => {
-          this.connection.sendData({test: 123})
-      }, 2000);
     }
     render() {
         return <div style={centerStyle}>

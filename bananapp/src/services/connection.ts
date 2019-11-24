@@ -1,23 +1,42 @@
 import { getCookies, setCookie } from "../util/util"
 import Peer from 'simple-peer'
+import { Emotion } from "../components/faceapi";
 
 interface Message {
   type: 'register' | 'init' | 'offer' | 'answer' | 'userId',
   signal: object | undefined,
   id: string | undefined,
 }
+interface Coords {
+  x?: number,
+  y: number
+}
+
+export interface RTCGameState {
+  type: 'state',
+  ball: Coords,
+  player: Coords,
+  paddle: Coords,
+}
+
+interface RTCEmotion {
+  type: 'emotion',
+  data: Emotion, 
+}
+export type  RTCData = RTCGameState | RTCEmotion
 
 const decoder = new TextDecoder("utf-8");
 
 
 type StreamCB = (stream: MediaStream) => void
-type DataCB = (data: any) => void
+type DataCB = (data: RTCData) => void
 
 export class Connection {
   ws: WebSocket | undefined;
   peer: Peer.Instance | undefined;
   id: string | undefined;
   onStream: StreamCB
+  onDataCB: DataCB
   outstream: MediaStream
   instream: MediaStream | undefined
   player: 'A' | 'B' | undefined
@@ -28,6 +47,7 @@ export class Connection {
       onStream(stream)
     }
     this.outstream = stream
+    this.onDataCB = onData
     this.init()
   }
 
@@ -53,14 +73,16 @@ export class Connection {
 
   onData = data => {
     data = decoder.decode(data)
-    console.log(data)
+    data = JSON.parse(data)
+    this.onDataCB(data)
   }
 
-  sendData(data: object) {
+  sendData(data: RTCData) {
     const peer = this.peer
     if (!peer) {
       console.log('no peer connection, can not send data')
     } else {
+      console.log('to send', JSON.stringify(data))
       peer.send(JSON.stringify(data))
     }
   }

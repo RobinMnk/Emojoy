@@ -16,6 +16,7 @@ interface IProps {
     noCenter?: boolean;
     height?: number;
     width?: number;
+    onVideoStream?: (stream: MediaStream) => void
 }
 
 interface IFaceAPIState {
@@ -107,9 +108,13 @@ export default class FaceAPI extends Component<IProps, IFaceAPIState> {
             const stream = await navigator.mediaDevices.getUserMedia({ video: true });
             const video = document.getElementById(this.webcamId) as HTMLMediaElement;
             video.srcObject = stream;
+            
             video.play()
             if (!this.state.started) {
                 this.startModel();
+            }
+            if (this.props.onVideoStream) {
+                this.props.onVideoStream(stream)
             }
         }
     }
