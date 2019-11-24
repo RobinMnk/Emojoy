@@ -56,7 +56,7 @@ export class Connection {
   }
 
   init = () => {
-    const ws = new WebSocket(azure) 
+    const ws = new WebSocket(local) 
     this.ws = ws
     const userId = getCookies()['USER_ID'];
       ws.onmessage = this.handleMessages

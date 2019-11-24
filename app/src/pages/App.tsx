@@ -42,9 +42,9 @@ class App extends React.Component<{}, IState> {
 
     renderContent = (key: string) => {
         console.log(key);
-        switch(key) {
+        switch (key) {
             case 'info':
-                return <Info switchPage={p => this.switchPage(p)}/>;
+                return <Info switchPage={p => this.switchPage(p)} />;
             case 'pong':
                 return <PongCanvas />;
             case 'game':
@@ -89,7 +89,23 @@ class App extends React.Component<{}, IState> {
                             <Icon type="info-circle" />
                             <span>Information</span>
                         </Item>
-                        
+                        <SubMenu key="3"
+                            title={
+                                <span>
+                                    <Icon type="video-camera" />
+                                    <span>Practice</span>
+                                </span>
+                            }
+                        >
+                            <Item key="practice1">
+                                <Icon type="meh" />
+                                <span>Forming</span>
+                            </Item>
+                            <Item key="practice2">
+                                <Icon type="smile" />
+                                <span>Transitions</span>
+                            </Item>
+                        </SubMenu>
                         <SubMenu key="games"
                             title={
                                 <span>
@@ -107,33 +123,8 @@ class App extends React.Component<{}, IState> {
                                 <span>R-P-S</span>
                             </Item>
                         </SubMenu>
-                        <SubMenu key="3"
-                            title={
-                                <span>
-                                    <Icon type="video-camera" />
-                                    <span>Practice</span>
-                                </span>
-                            }
-                        >
-                            <Item key="practice1">
-                                <Icon type="meh" />
-                                <span>Forming</span>
-                            </Item>
-                            <Item key="practice2">
-                                <Icon type="smile" />
-                                <span>Transitions</span>
-                            </Item>
-                            {/* <Item key="practice3">
-                                <Icon type="smile" />
-                                <span>Scenario 3</span>
-                            </Item> */}
-                            {/* <Item key="webrtc_test">
-                                <Icon type="meh" />
-                                <span>Webrtc test</span>
-                            </Item> */}
-                        </SubMenu>
-                        
-                        <SubMenu key="multiplayer"
+                        <SubMenu
+                            key="multiplayer"
                             title={
                                 <span>
                                     <Icon type="team" />
@@ -145,10 +136,6 @@ class App extends React.Component<{}, IState> {
                                 <Icon type="play-circle" />
                                 <span>Pong 2P</span>
                             </Item>
-                            {/* <Item key="rps_mult">
-                                <Icon type="scissor" />
-                                <span>R-P-S</span>
-                            </Item> */}
                         </SubMenu>
                     </Menu>
                 </Sider>
@@ -162,7 +149,7 @@ class App extends React.Component<{}, IState> {
                         }}
                     >
                         {this.renderContent(this.state.currentPage)}
-                </Content>
+                    </Content>
                 </Layout>
             </Layout>
         );

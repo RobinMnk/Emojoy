@@ -72,7 +72,7 @@ export default class FaceAPI extends Component<IProps, IFaceAPIState> {
             mirrorBox(resizedResult);
             if (resizedResult) {
                 faceapi.draw.drawDetections(canvas, resizedResult);
-                // faceapi.draw.drawFaceExpressions(canvas, resizedResult, 0.05)
+                faceapi.draw.drawFaceExpressions(canvas, resizedResult, 0.05)
             }
             let maxConfidenceEmotion = "neutral";
             let confidence = 0.0;
