@@ -83,7 +83,6 @@ export class Connection {
     if (!peer || !peer.connected) {
       console.log('no peer connection, can not send data')
     } else {
-      console.log('to send', JSON.stringify(data))
       peer.send(JSON.stringify(data))
     }
   }
@@ -94,7 +93,12 @@ export class Connection {
     } else if (!message.signal) {
       console.log('no offer in payload')
     } else {
-      this.peer.signal(message.signal)
+      try {
+        this.peer.signal(message.signal)
+        this.peer.addStream(this.outstream)
+      } catch (err) {
+        console.log('already added stream in answer')
+      }
     }
   }
 
@@ -114,7 +118,10 @@ export class Connection {
 
   handleOffer = (message: Message) => {
     if (this.peer) {
+      if (!message.signal) return
       console.log('alreadt a rtc client created')
+      this.peer.signal(message.signal)
+      this.player = 'B'
     } else if (!message.signal) {
       console.log('no offer in payload')
     } else {
@@ -137,7 +144,6 @@ export class Connection {
       this.peer.on('signal', this.handleSignal)
       this.peer.on('stream', this.onStream)
       this.peer.on('data', this.onData)
-      this.peer.addStream(this.outstream)
       this.player = 'A'
     }
   }

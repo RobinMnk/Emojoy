@@ -69,14 +69,12 @@ export default class MPPong extends Component<any, State> {
   }
 
   gameStateCB = (gameState: RTCGameState) => {
-    console.log(gameState)
     const connection = this.connection
     if (gameState && connection)
       connection.sendData(gameState)
   }
 
   onData = (data: RTCData) => {
-    console.log('ondata', data)
     if (data.type === 'emotion') {
       const em = data.data
       if (em === 'happy') {

@@ -11,6 +11,5 @@ export function getCookies(): Cookies {
 }
 
 export function setCookie(key: string, value: string) {
-  console.log(key, value)
   document.cookie = `${key}=${value}`
 }
