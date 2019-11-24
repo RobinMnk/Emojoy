@@ -44,9 +44,8 @@ export class Info extends React.Component<IProps, {}> {
             }}
           >
             This app allows you to play video games through your facial
-            expressions alone. This enables physically disabled people to enjoy
-            games they otherwise couldn't and helps people that suffer from
-            disorders like autism to improve their detection of facial expressions.
+            expressions alone. This enables bored people to enjoy games in an 
+            unconvential and stealthy manner (one may say lectures).
           </p>
           <p
             style={{
