@@ -4,7 +4,7 @@ interface Cookies {
 
 export function getCookies(): Cookies {
   const cookies: Cookies = {}
-  var match = document.cookie.split(';')
+  document.cookie.split(';')
     .map(e => e.trim().split('='))
     .forEach(([k, v]) => cookies[k] = v)
   return cookies

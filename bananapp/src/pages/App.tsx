@@ -9,6 +9,7 @@ import { PracticeAdvanced } from '../components/PracticeAdvanced';
 import WebRtc from '../components/web_rtc';
 import { RockPaperScissors } from '../components/rockpaperscissors';
 import PongCanvas from '../components/pong';
+import MPPong from "../components/mp_pong";
 const { Sider, Content } = Layout;
 const { SubMenu, Item } = Menu;
 
@@ -54,6 +55,8 @@ class App extends React.Component<{}, IState> {
                 return (
                     <PracticeEasy />
                 );
+            case 'pong_mult':
+                return <MPPong />; // Pong Multiplayer component
             case 'practice2':
                 return (
                     <PracticeAdvanced />
@@ -68,14 +71,18 @@ class App extends React.Component<{}, IState> {
     render() {
         return (
             <Layout style={{ height: '100vh' }}>
-                <Sider collapsible={false} collapsed={this.state.collapsed} onCollapse={this.toggle}>
-                    <div className="logo" />
+                <Sider
+                    collapsible={false}
+                    collapsed={this.state.collapsed}
+                    onCollapse={this.toggle}
+                    width={168}
+                >
                     <Menu
                         theme="dark"
                         mode="inline"
                         defaultSelectedKeys={[this.state.currentPage]}
                         onSelect={vals => this.setState({ currentPage: vals.key })}
-                        openKeys={['3', 'games']}
+                        openKeys={['3', 'games', 'multiplayer']}
                         selectedKeys={[this.state.currentPage]}
                     >
                         <Item key="info">
@@ -86,17 +93,17 @@ class App extends React.Component<{}, IState> {
                         <SubMenu key="games"
                             title={
                                 <span>
-                                    <Icon type="team" />
+                                    <Icon type="user" />
                                     <span>Games</span>
                                 </span>
                             }
                         >
                             <Item key="pong">
-                                <Icon type="user" />
+                                <Icon type="bulb" />
                                 <span>Pong</span>
                             </Item>
                             <Item key="rps">
-                                <Icon type="user" />
+                                <Icon type="scissor" />
                                 <span>R-P-S</span>
                             </Item>
                         </SubMenu>
@@ -120,10 +127,28 @@ class App extends React.Component<{}, IState> {
                                 <Icon type="smile" />
                                 <span>Scenario 3</span>
                             </Item> */}
-                            <Item key="webrtc_test">
+                            {/* <Item key="webrtc_test">
                                 <Icon type="meh" />
                                 <span>Webrtc test</span>
+                            </Item> */}
+                        </SubMenu>
+                        
+                        <SubMenu key="multiplayer"
+                            title={
+                                <span>
+                                    <Icon type="team" />
+                                    <span>Multiplayer</span>
+                                </span>
+                            }
+                        >
+                            <Item key="pong_mult">
+                                <Icon type="play-circle" />
+                                <span>Pong 2P</span>
                             </Item>
+                            {/* <Item key="rps_mult">
+                                <Icon type="scissor" />
+                                <span>R-P-S</span>
+                            </Item> */}
                         </SubMenu>
                     </Menu>
                 </Sider>
