@@ -3,9 +3,18 @@ import Pong, { DIRECTION } from './pong_canvas'
 import FaceAPI, { Emotion } from './faceapi';
 import { Connection, RTCData, RTCGameState } from '../services/connection';
 
-export default class MPPong extends Component {
+type FlowState = 'loadingFace' | 'lookingForPlayers' | 'start'
+
+interface State {
+  waitingForFaceAPI: boolean,
+  bv: boolean,
+  state: FlowState,
+}
+
+export default class MPPong extends Component<any, State> {
   pong: any
   connection: Connection | any
+  stream: MediaStream
   constructor(props: {}) {
     super(props); 
   }

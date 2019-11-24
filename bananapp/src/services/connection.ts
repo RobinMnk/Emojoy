@@ -33,7 +33,7 @@ type DataCB = (data: RTCData) => void
 
 export class Connection {
   ws: WebSocket | undefined;
-  peer: Peer.Instance | undefined;
+  peer: any | undefined;
   id: string | undefined;
   onStream: StreamCB
   onDataCB: DataCB
@@ -79,7 +79,7 @@ export class Connection {
 
   sendData(data: RTCData) {
     const peer = this.peer
-    if (!peer) {
+    if (!peer || !peer.connected) {
       console.log('no peer connection, can not send data')
     } else {
       console.log('to send', JSON.stringify(data))
