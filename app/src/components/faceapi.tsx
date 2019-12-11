@@ -5,7 +5,7 @@ import * as faceapi from "face-api.js";
 
 const centerStyle = {
     justifyContent: 'space-around',
-    display: 'flex'
+    display: 'flex',
 };
 
 export type Emotion = 'neutral' | 'happy' | 'sad' | 'surprised' | 'angry' | 'disgusted' | 'fearful'
@@ -16,6 +16,9 @@ interface IProps {
     noCenter?: boolean;
     height?: number;
     width?: number;
+    mobile?: boolean;
+    webcamHeight?: number;
+    webcamWidth?: number;
     onVideoStream?: (stream: MediaStream) => void
 }
 
@@ -30,6 +33,7 @@ interface IFaceAPIState {
  *  <FaceAPI
  *      setEmotion={em => handleEmotionChange(em)}
  *      onRunning={() => this.setState({ loading: false })}
+ *      mobile={this.state.mobile}
  *  />
  */
 export default class FaceAPI extends Component<IProps, IFaceAPIState> {
@@ -82,11 +86,11 @@ export default class FaceAPI extends Component<IProps, IFaceAPIState> {
                     confidence = newConfidence;
                 }
             }
-            if (this.state.emotion !== maxConfidenceEmotion) {
+            if (confidence > 0.4 && this.state.emotion !== maxConfidenceEmotion) {
                 this.setState({ emotion: maxConfidenceEmotion });
                 this.props.setEmotion(maxConfidenceEmotion as Emotion);
+                console.log(maxConfidenceEmotion);
             }
-            console.log(maxConfidenceEmotion);
         }
         if(this.mounted) {
             setTimeout(() => this.applyModel(videoElement, canvas), 50);
@@ -122,13 +126,20 @@ export default class FaceAPI extends Component<IProps, IFaceAPIState> {
         if(!this.mounted) {
             return null;
         }
-        let divStyle = this.props.noCenter ? {} : centerStyle
+
+        const adjustedCenterStyle = Object.assign({maxWidth: '40vh'}, centerStyle)
+
+        let divStyle = this.props.noCenter ? {} : 
+            (!this.props.mobile ? centerStyle : adjustedCenterStyle);
+        
         const videoStyle = {
-            transform: "rotateY(180deg)"
+            transform: "rotateY(180deg)",
+            width: '100%',
         }
         const canvasStyle = {
             top: "0px", 
-            left: "0px"
+            left: "0px",
+            width: '100%',
         }
         
         if(this.props.width && this.props.height) {
@@ -142,12 +153,19 @@ export default class FaceAPI extends Component<IProps, IFaceAPIState> {
             });
         }
 
-        return <div style={divStyle} className={"webcam-component"}>
-            <Row>
-                <video style={videoStyle} id={this.webcamId}></video>
-                <canvas style={Object.assign(canvasStyle, {position: 'absolute'})} id={this.canvasId}></canvas>
-            </Row>
-        </div>
+        const containerStyle = Object.assign({position: 'relative' as 'relative'}, divStyle);
+
+        return (
+            <div style={{justifyContent: 'space-around', display: 'flex',}} className={"webcam-component-out"}>
+                <div style={containerStyle} className={"webcam-component"}>
+                    <video
+                        style={videoStyle} id={this.webcamId}
+                    >
+                    </video>
+                    <canvas style={Object.assign(canvasStyle, {position: 'absolute'})} id={this.canvasId}></canvas>
+                </div>
+            </div>
+        );
     }
 }
 

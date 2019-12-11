@@ -1,3 +1,3 @@
 # Emojoy
 
-emojoyy.web.app
+[Play Now](emojoy.app)

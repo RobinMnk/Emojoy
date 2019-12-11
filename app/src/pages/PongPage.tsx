@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import Pong, { DIRECTION } from './pong_canvas'
-import FaceAPI, { Emotion } from './faceapi';
+import Pong, { DIRECTION } from '../components/pong_canvas'
+import FaceAPI, { Emotion } from '../components/faceapi';
 import { Button } from 'antd';
 
 const centerStyle = {
@@ -8,10 +8,15 @@ const centerStyle = {
   display: 'flex',
 };
 
-export default class PongCanvas extends Component<{}, { waitingForFaceAPI: boolean, bv: boolean }> {
+interface IProps {
+  mobile: boolean;
+}
+
+export default class PongCanvas extends Component<IProps, { waitingForFaceAPI: boolean, bv: boolean }> {
   pong: any
-  constructor(props: {}) {
+  constructor(props) {
     super(props); 
+    debugger;
     this.state = {
       waitingForFaceAPI: true,
       bv: true,
@@ -65,8 +70,15 @@ export default class PongCanvas extends Component<{}, { waitingForFaceAPI: boole
       top: 0,
     }
 
+    const outerMostStyle = {
+      // position: 'relative',
+      margin: 0,
+      // transform: (`rotate(${this.props.mobile ? 90 : 0})` as PositionProperty),
+      rotate: '90',
+    }
+
       return (
-        <div style={{position: 'relative', margin: 0}}>
+        <div style={Object.assign(outerMostStyle, {position: 'relative'})}>
           <div id={'pongDiv'} style={Object.assign(pongStyle, {position: 'absolute'})}>
           <div style={Object.assign(faceAPIstyle, {position: 'absolute'})}>
             <FaceAPI

@@ -1,7 +1,7 @@
 import React from 'react'
-import { Typography, Button, Row, Col, Table, Icon } from 'antd';
-import FaceAPI, { Emotion } from './faceapi';
-import { emotion2emoji, feedbackNotification } from '../pages/App';
+import { Typography, Button, Table, Icon } from 'antd';
+import FaceAPI, { Emotion } from '../components/faceapi';
+import { emotion2emoji, feedbackNotification } from './App';
 const { Title } = Typography;
 
 const SCORING_TYPE : 'fixed_time' | 'fixed_rows' = 'fixed_rows';
@@ -25,7 +25,7 @@ interface Entry {
 }
 
 interface IProps {
-
+    mobile: boolean;
 }
 
 interface IState {
@@ -94,7 +94,9 @@ export class PracticeAdvanced extends React.Component<IProps, IState> {
                 currentEntry[em] = 'done';
                 table.push(currentEntry);
 
-                feedbackNotification('topLeft');
+                if(!this.props.mobile) {
+                    feedbackNotification('topLeft');
+                }
 
                 if(isDone(currentEntry)) {
 
@@ -113,11 +115,11 @@ export class PracticeAdvanced extends React.Component<IProps, IState> {
     }
 
     renderAux() {
+        const mobile = this.props.mobile;
         if(this.state.phase === 'info') {
-            return (
-                <div>
-                    <Title>Transition Game</Title>
-                    {/* <p> Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gube ... </p> */}
+
+            const description = (
+                <div style={{padding: 10}}>
                     <p> Here you can practice the transitions between expressions. </p>
                     <p> Try to form every expression from the table on the right. Once you completed every
                         face, you advance to the next round and go again. You will play three rounds. </p>
@@ -134,11 +136,34 @@ export class PracticeAdvanced extends React.Component<IProps, IState> {
                     </div>
                 </div>
             );
+
+            return (
+                <div>
+                    <Title>Transition Game</Title>
+                    { mobile ? (
+                            <div>
+                                <FaceAPI
+                                    setEmotion={em => this.emotionChange(em)}
+                                    noCenter={true}
+                                    onRunning={() => this.setState({ loading: false })}
+                                />
+                            </div> ) : null }
+                    { description }
+                </div>
+            );
         }
         if (this.state.phase === 'playing' || this.state.phase === 'finished') {
             return (
                 <div>
-                    <Title>Emotion Change</Title>
+                    <Title>Transition Game</Title>
+                    { mobile ? (
+                            <div>
+                                <FaceAPI
+                                    setEmotion={em => this.emotionChange(em)}
+                                    noCenter={true}
+                                    onRunning={() => this.setState({ loading: false })}
+                                />
+                            </div> ) : null }
                     <TableComponent
                         data={this.state.emotionTable}
                     />
@@ -163,19 +188,29 @@ export class PracticeAdvanced extends React.Component<IProps, IState> {
         }
     }
 
-    render() {
+    renderDesktop() {
         return (
-            <Row>
-                <Col span={16}>
+            <div style={{width: '100%', display: 'flex'}}>
+                <div style={{flex: '0 0 65%'}}>
                     <FaceAPI
                         setEmotion={em => this.emotionChange(em)}
                         noCenter={true}
                         onRunning={() => this.setState({ loading: false })}
                     />
-                </Col>
-                <Col span={8}>{this.renderAux()}</Col>
-            </Row>
+                </div>
+                <div style={{flex: '1', padding: '0 12px'}}>
+                    { this.renderAux() }
+                </div>
+            </div>
         );
+    }
+
+    renderMobile() {
+        return this.renderAux();
+    }
+
+    render() {
+        return this.props.mobile ? this.renderMobile() : this.renderDesktop();
     }
 }
 
@@ -195,6 +230,7 @@ const numCorrect = (entry: Entry) =>
 const newEntry = (round: number) : Entry => {
     const entry: Entry = {} as Entry;
     entry['round'] = round;
+    entry['key'] = `${round}`
     emotions.forEach(em => {
         entry[em] = 'open';
     });
@@ -236,6 +272,9 @@ const TableComponent = (props: any) => {
             pagination={false}
             size={'small'}
             bordered={true}
+            style={{
+                minWidth: 330
+            }}
         />
     );
 }
