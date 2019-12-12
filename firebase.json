@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "public": "bananapp/build",
+    "public": "app/build",
     "ignore": [
       "firebase.json",
       "**/.*",
