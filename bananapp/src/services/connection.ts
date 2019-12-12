@@ -29,7 +29,6 @@ export type  RTCData = RTCGameState | RTCEmotion
 const decoder = new TextDecoder("utf-8");
 
 // const azure = 'ws://hackatumwebsockets.azurewebsites.net:8081'
-const azure = 'ws://40.114.192.132:8080'
 const local = 'ws://localhost:8080'
 
 type StreamCB = (stream: MediaStream) => void
@@ -56,7 +55,7 @@ export class Connection {
   }
 
   init = () => {
-    const ws = new WebSocket(azure) 
+    const ws = new WebSocket(local)
     this.ws = ws
     const userId = getCookies()['USER_ID'];
       ws.onmessage = this.handleMessages
