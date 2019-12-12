@@ -127,7 +127,7 @@ class App extends React.Component<{}, IState> {
                     <span>R-P-S</span>
                 </Item>
             </SubMenu>
-            <SubMenu
+            {/* <SubMenu
                 key="multiplayer"
                 title={
                     <span>
@@ -140,7 +140,7 @@ class App extends React.Component<{}, IState> {
                     <Icon type="play-circle" />
                     <span>Pong 2P</span>
                 </Item>
-            </SubMenu>
+            </SubMenu> */}
         </Menu>
     )
 

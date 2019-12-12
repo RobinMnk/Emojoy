@@ -15,8 +15,7 @@ interface IProps {
 export default class PongCanvas extends Component<IProps, { waitingForFaceAPI: boolean, bv: boolean }> {
   pong: any
   constructor(props) {
-    super(props); 
-    debugger;
+    super(props);
     this.state = {
       waitingForFaceAPI: true,
       bv: true,
