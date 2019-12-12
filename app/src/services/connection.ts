@@ -28,7 +28,6 @@ export type  RTCData = RTCGameState | RTCEmotion
 
 const decoder = new TextDecoder("utf-8");
 
-// const azure = 'ws://hackatumwebsockets.azurewebsites.net:8081'
 const local = 'ws://localhost:8080'
 
 type StreamCB = (stream: MediaStream) => void

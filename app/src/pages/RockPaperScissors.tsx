@@ -1,5 +1,5 @@
 import React from 'react'
-import FaceAPI, { Emotion } from "./faceapi";
+import FaceAPI, { Emotion } from "../components/faceapi";
 import { Row, Typography, Button, Col, Table } from "antd";
 const { Title } = Typography;
 
