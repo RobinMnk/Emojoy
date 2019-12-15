@@ -8,8 +8,7 @@ import { PracticeAdvanced } from './PracticeAdvanced';
 import WebRtc from '../components/web_rtc';
 import { RockPaperScissors } from './RockPaperScissors';
 import PongCanvas from '../pages/PongPage';
-import MPPong from "../components/mp_pong";
-import { isUserWhitespacable } from '@babel/types';
+import NewPongCanvas from '../components/new_pong';
 const { Sider, Content, Header } = Layout;
 const { SubMenu, Item } = Menu;
 
@@ -59,15 +58,15 @@ class App extends React.Component<{}, IState> {
             case 'info':
                 return <Info switchPage={p => this.switchPage(p)} />;
             case 'pong':
-                return <PongCanvas mobile={this.state.mobile} />;
+                return <NewPongCanvas mobile={this.state.mobile} />;
             case 'rps':
                 return <RockPaperScissors />;
             case 'practice1':
                 return (
                     <PracticeEasy />
                 );
-            case 'pong_mult':
-                return <MPPong />; // Pong Multiplayer component
+            // case 'pong_mult':
+            //     return <MPPong />; // Pong Multiplayer component
             case 'practice2':
                 return (
                     <PracticeAdvanced mobile={this.state.mobile} />
