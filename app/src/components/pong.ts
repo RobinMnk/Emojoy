@@ -79,8 +79,8 @@ export class PongGame {
       y: .5,
       dx: .5,
       dy: 1,
-			speed: .005,
-    }
+			speed: .01,
+    } 
   }
 
   createPaddle(side: 'left' | 'right'): Paddle {
@@ -90,7 +90,7 @@ export class PongGame {
       width: 5,
       yPosition: .5,
       speed: .01,
-      move: side === 'left' ? DIRECTION.UP : DIRECTION.DOWN,
+      move: DIRECTION.IDLE,
     }
   }
 
@@ -99,28 +99,11 @@ export class PongGame {
     if (player.paddle.move === DIRECTION.UP) {
       paddle.yPosition = Math.max(0, paddle.yPosition - paddle.speed)
     } else if (player.paddle.move === DIRECTION.DOWN) {
-      paddle.yPosition = Math.min(1, paddle.yPosition + paddle.speed)
+      paddle.yPosition = Math.min(1 - paddle.height, paddle.yPosition + paddle.speed)
     }
   }
 
   _updateBall(ball: Ball) {
-    // if (ball.dx < 0 && ball.dy < 0) { // top left
-    //   direction = BALL_DIRECTION.TOP_LEFT
-    //   ball.x -= .5 * ball.speed
-    //   ball.y -= ball.speed
-    // } else if (ball.dx < 0 && 0 < ball.dy) { // top right
-    //   direction = BALL_DIRECTION.TOP_RIGHT
-    //   ball.x += .5 * ball.speed
-    //   ball.y -= ball.speed
-    // } else if (0 < ball.dx && ball.dy < 0) { // bottom left
-    //   direction = BALL_DIRECTION.BOTTOM_LEFT
-    //   ball.x -= .5 * ball.speed
-    //   ball.y += ball.speed
-    // } else if (0 < ball.dx && 0 < ball.dy) { // bottom right
-    //   direction = BALL_DIRECTION.BOTTOM_RIGHT
-    //   ball.x += .5 * ball.speed
-    //   ball.y += ball.speed
-    // }
     ball.x += ball.dx * ball.speed
     ball.y += ball.dy * ball.speed
 
@@ -133,7 +116,7 @@ export class PongGame {
     }
   }
 
-  update() {
+  update(): 'left' | 'right' | null {
     if (!this.canvasContext && this.state !== STATE.PLAYING) {
       return
     }
@@ -141,26 +124,32 @@ export class PongGame {
     this._updatePlayer(this.rightPlayer)
     this._updateBall(this.ball)
 
-    // check for collision
-
+    // manage for collision
     const onLeftBorder = this.ball.x <= 0 + (this.leftPlayer.paddle.width / this.canvas.width)
-    const onRightBorder = this.canvas.width - (this.rightPlayer.paddle.width / this.canvas.width) < this.ball.x
-    if (onLeftBorder) {
-      const paddle = this.leftPlayer.paddle
+    const onRightBorder = 1 - (this.rightPlayer.paddle.width / this.canvas.width) <= this.ball.x + this.ball.width
+    if (onLeftBorder || onRightBorder) {
+      const paddle = onLeftBorder ? this.leftPlayer.paddle : this.rightPlayer.paddle
       const hitPoint = paddle.yPosition + paddle.height - this.ball.y
       const hitPaddle = -this.ball.height < hitPoint && hitPoint < paddle.height
       if (hitPaddle) {
-        this.ball.x = 0
+        this.ball.x = onLeftBorder ? paddle.width / this.canvas.width 
+                                   : 1 - (paddle.width / this.canvas.width) - this.ball.width
         this.ball.dx *= -1
+      } else {
+        return onLeftBorder ? 'left' : 'right'
       }
-    } else if (onRightBorder) {
-
     }
-
+    return null
   }
 
   run() {
-    this.update()
+    const res = this.update()
+    if (res) {
+      const winner = res === 'right' ? this.leftPlayer : this.rightPlayer
+      winner.score += 1
+      // new Round
+      this.setupGame()
+    }
     this.paint()
     // if (this.state === STATE.PLAYING) {
       requestAnimationFrame(() => this.run());
@@ -191,12 +180,13 @@ export class PongGame {
 
   paint() {
     // clear the canvasContext
-    this.canvasContext.clearRect(
-			0,
-			0,
-			this.canvas.width,
-			this.canvas.height,
-    );
+    // this.canvasContext.clearRect(
+		// 	0,
+		// 	0,
+		// 	this.canvas.width,
+		// 	this.canvas.height,
+    // );
+    this.canvasContext.beginPath();
     // Set the fill style to black
     this.canvasContext.fillStyle = this.backgroundColor;
     this.canvasContext.fillRect(
@@ -216,8 +206,8 @@ export class PongGame {
       const bw = this.ball.width * this.canvas.height
       const bh = this.ball.height * this.canvas.height
 			this.canvasContext.fillRect(
-				this.ball.x * (this.canvas.width - bw),
-				this.ball.y * (this.canvas.height - bh),
+				this.ball.x * this.canvas.width,
+				this.ball.y * this.canvas.height,
         bw,
         bh,
 			);
@@ -228,7 +218,7 @@ export class PongGame {
     const ph = paddle.height * this.canvas.height
     this.canvasContext.fillRect(
       side === 'left' ? 0 : this.canvas.width - paddle.width,
-			paddle.yPosition * (this.canvas.height - ph),
+			paddle.yPosition * this.canvas.height,
 			paddle.width,
 			ph,
 		);
