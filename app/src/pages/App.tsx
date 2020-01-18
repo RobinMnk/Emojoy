@@ -9,7 +9,6 @@ import WebRtc from '../components/web_rtc';
 import { RockPaperScissors } from './RockPaperScissors';
 import PongCanvas from '../pages/PongPage';
 import MPPong from "../components/mp_pong";
-import { isUserWhitespacable } from '@babel/types';
 const { Sider, Content, Header } = Layout;
 const { SubMenu, Item } = Menu;
 
@@ -54,7 +53,6 @@ class App extends React.Component<{}, IState> {
     }
 
     renderContent = (key: string) => {
-        console.log(key);
         switch (key) {
             case 'info':
                 return <Info switchPage={p => this.switchPage(p)} />;

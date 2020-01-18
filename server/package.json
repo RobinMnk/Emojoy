@@ -1,6 +1,6 @@
 {
-  "name": "bananaserver",
-  "version": "1.0.0",
+  "name": "emojoy-server",
+  "version": "0.1.0",
   "description": "",
   "main": "index.js",
   "scripts": {
