@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Row } from 'antd';
 
 import * as faceapi from "face-api.js";
 
