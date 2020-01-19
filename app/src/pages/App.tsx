@@ -158,7 +158,7 @@ class App extends React.Component<{}, IState> {
                         style={{
                             margin: 0,
                             // margin: this.state.currentPage === 'pong' || this.state.currentPage === 'pong_mult' ? 0 : '16px',
-                            padding: this.state.currentPage === 'pong' || this.state.currentPage === 'pong_mult' ? 0 : 24,
+                            padding: ['pong', 'pong_mult', 'info'].includes(this.state.currentPage) ? 0 : 24,
                             background: '#fff',
                             minHeight: 280,
                         }}
@@ -223,14 +223,13 @@ class App extends React.Component<{}, IState> {
                         <Content
                             style={{
                                 // margin: this.state.currentPage === 'pong' || this.state.currentPage === 'pong_mult' ? 0 : '16px',
-                                padding: this.state.currentPage === 'pong' || this.state.currentPage === 'pong_mult' ? 0 : 10,
+                                padding: ['pong', 'pong_mult', 'info'].includes(this.state.currentPage) ? 0 : 10,
                                 margin: 0,
                                 background: '#fff',
                                 minHeight: 280,
                                 position: 'absolute',
                                 left: 0,
                                 zIndex: 0,
-                                // top: 0,
                             }}
                         >
                             {this.renderContent(this.state.currentPage)}
