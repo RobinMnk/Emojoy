@@ -1,6 +1,7 @@
 import React from 'react'
 import './Info.css';
 import { Typography, Divider, Button, Row, Col } from 'antd';
+import { AppFooter } from './App';
 
 const { Title, Text } = Typography
 
@@ -14,6 +15,7 @@ export function Info(props: IProps) {
       <Header />
       <Facts />
       <AboutUs />
+      <AppFooter />
     </>
   );
 }
@@ -139,23 +141,11 @@ function AboutUs() {
       <Col span={24}>
         <Text style={darkText}>But any support is appreciated:</Text>
         <ul>
-          <li style={bulletPoint}>Help us improving this project by sending us ideas! What features would you love to see? {<EmailButton />}</li>
+          <li style={bulletPoint}>Help us improving this project by sending us ideas! What features would you love to see? {<a href='mailto:emojoyapp@gmail.com'>Send us an Email!</a>}</li>
           <li style={bulletPoint}>Are you a developer? {<a href="https://github.com/RobinMnk/Emojoy">Visit our Github page!</a>}</li>
-          <li style={bulletPoint}>You can also {<CoffeeButton />} to support us!</li>
+          <li style={bulletPoint}>You can also {<a href='https://www.buymeacoffee.com/emojoy'>Buy us a coffee!</a>} to support us!</li>
         </ul>
       </Col>
     </Row>
   </div>
-}
-
-function CoffeeButton() {
-  return <Button type="primary" shape="round" icon="coffee" href='https://www.buymeacoffee.com/emojoy'>
-    Buy us a coffee!
-        </Button>
-}
-
-function EmailButton() {
-  return <Button type="primary" shape="round" icon="mail" href='mailto:emojoyapp@gmail.com'>
-    Send us an Email!
-        </Button>
 }
