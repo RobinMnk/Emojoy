@@ -51,7 +51,12 @@ function Header(props: IProps) {
 			</Row>
 			<Row style={{ marginTop: '5vh' }}>
 				<Col span={24} >
-					<Button style={{ justifyContent: 'space-around' }}>Try it!</Button>
+					<Button
+						style={{ justifyContent: 'space-around' }}
+						onClick={_ => props.switchPage('practice1')}
+					>
+						Try it!
+					</Button>
 				</Col>
 			</Row>
 			<Row style={{ marginTop: '20vh' }}>
