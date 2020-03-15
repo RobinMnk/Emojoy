@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import '../App.css';
-import { Icon, Menu, Layout } from 'antd';
+import { Icon, Menu, Layout, Button } from 'antd';
 import { Info } from './Info';
 import { PracticeEasy } from './PracticeEasy';
 import { PracticeAdvanced } from './PracticeAdvanced';
@@ -9,7 +9,7 @@ import { RockPaperScissors } from './RockPaperScissors';
 import PongCanvas from '../pages/PongPage';
 import MPPong from "../components/mp_pong";
 import { useWindowSize } from '../Utils';
-const { Sider, Content, Header } = Layout;
+const { Sider, Content, Header, Footer } = Layout;
 const { SubMenu, Item } = Menu;
 
 interface IProps {
@@ -197,5 +197,14 @@ const MainComponent = (props: IProps) => {
         </Layout>
     );
 }
+
+export function AppFooter() {
+    return <Footer style={{ textAlign: 'center' }}>
+      Emojoy ©2020
+      <Button type='link' icon='coffee' href='https://www.buymeacoffee.com/emojoy' />
+      <Button type='link' icon='github' href='https://github.com/RobinMnk/Emojoy' />
+      <Button type='link' icon='mail' href='mailto:emojoyapp@gmail.com' />
+    </Footer>
+  }
 
 export default MainComponent;
