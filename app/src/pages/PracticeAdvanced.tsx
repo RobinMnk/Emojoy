@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Typography, Button, Table, Icon } from 'antd';
 import FaceAPI, { Emotion } from '../components/faceapi';
-import { emotion2emoji, feedbackNotification } from './Utils';
+import { emotion2emoji, feedbackNotification } from '../Utils';
 const { Title } = Typography;
 
 const SCORING_TYPE : 'fixed_time' | 'fixed_rows' = 'fixed_rows' as 'fixed_time' | 'fixed_rows';

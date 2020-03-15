@@ -8,7 +8,7 @@ import WebRtc from '../components/web_rtc';
 import { RockPaperScissors } from './RockPaperScissors';
 import PongCanvas from '../pages/PongPage';
 import MPPong from "../components/mp_pong";
-import { useWindowSize } from './Utils';
+import { useWindowSize } from '../Utils';
 const { Sider, Content, Header } = Layout;
 const { SubMenu, Item } = Menu;
 

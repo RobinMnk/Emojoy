@@ -1,4 +1,4 @@
-import { getCookies, setCookie } from "../util/util"
+import { getCookies, setCookie } from "./util"
 import Peer from 'simple-peer'
 import { Emotion } from "../components/faceapi";
 

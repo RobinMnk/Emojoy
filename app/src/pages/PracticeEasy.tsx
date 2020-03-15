@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import FaceAPI, { Emotion } from "../components/faceapi";
-import { emotion2emoji, feedbackNotification } from './Utils';
+import { emotion2emoji, feedbackNotification } from '../Utils';
 import { Row, Typography, Button } from "antd";
 const { Title } = Typography;
 
@@ -25,7 +25,7 @@ export const PracticeEasy = () => {
             setTask(newTask);
             setCorrect(false);
         }
-    }, [correct, started]);
+    }, [correct, started, task]);
     
     const shuffle = () => {
         setTask('neutral');

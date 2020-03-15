@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { notification } from "antd";
-import { Emotion } from "../components/faceapi";
+import { Emotion } from "./components/faceapi";
 
 interface WindowSize {
     width: number | undefined;
@@ -35,7 +35,7 @@ export function useWindowSize(onResize?: (newSize: WindowSize) => void) {
 
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
-    }, []); // Empty array ensures that effect is only run on mount and unmount
+    }); // Empty array ensures that effect is only run on mount and unmount
 
     return windowSize;
 }
