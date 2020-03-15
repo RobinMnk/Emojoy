@@ -1,63 +1,34 @@
-import React from 'react';
+import React, { useState } from 'react';
 import '../App.css';
-import { Icon, Menu, Layout, notification } from 'antd';
+import { Icon, Menu, Layout } from 'antd';
 import { Info } from './Info';
-import { Emotion } from "../components/faceapi";
 import { PracticeEasy } from './PracticeEasy';
 import { PracticeAdvanced } from './PracticeAdvanced';
 import WebRtc from '../components/web_rtc';
 import { RockPaperScissors } from './RockPaperScissors';
 import PongCanvas from '../pages/PongPage';
 import MPPong from "../components/mp_pong";
+import { useWindowSize } from './Utils';
 const { Sider, Content, Header } = Layout;
 const { SubMenu, Item } = Menu;
 
+interface IProps {
 
-interface IState {
-    collapsed: boolean;
-    currentPage: string;
-    mobile: boolean;
-    siderVisible: boolean;
 }
 
-class App extends React.Component<{}, IState> {
-    constructor(props: Readonly<{}>) {
-        super(props);
-        this.state = {
-            mobile: false,
-            collapsed: false,
-            currentPage: 'info',
-            siderVisible: true,
-        };
-    }
-    componentDidMount() {
-        this.checkMobile();
-        window.addEventListener("resize", this.checkMobile.bind(this));
-    }
+const MainComponent = (props: IProps) => {
+    
+    const [mobile, setMobile] = useState(window.innerWidth < 768);
+    const [currentPage, switchPage] = useState('info');
+    const [siderVisible, showSider] = useState(false);
+    useWindowSize(newSize => setMobile(newSize.width < 768));
 
-    checkMobile = () => {
-        const mobile = window.innerWidth < 768;
-        this.setState({mobile, siderVisible: !mobile});
-    }
-
-    toggle = () => {
-        this.setState({
-            siderVisible: !this.state.siderVisible,
-        });
-    };
-
-    switchPage = (page: string) => {
-        this.setState({
-            currentPage: page
-        })
-    }
-
-    renderContent = (key: string) => {
-        switch (key) {
+    const renderContent = () => {
+        switch (currentPage) {
             case 'info':
-                return <Info switchPage={p => this.switchPage(p)} />;
+                return <Info switchPage={p => switchPage(p)} />;
             case 'pong':
-                return <PongCanvas mobile={this.state.mobile} />;
+                return <PongCanvas mobile={mobile} />;
             case 'rps':
                 return <RockPaperScissors />;
             case 'practice1':
@@ -68,7 +39,7 @@ class App extends React.Component<{}, IState> {
                 return <MPPong />; // Pong Multiplayer component
             case 'practice2':
                 return (
-                    <PracticeAdvanced mobile={this.state.mobile} />
+                    <PracticeAdvanced mobile={mobile} />
                 );
             case 'practice3':
                 return <p> Not Implemented Yet, Practice Scenario 3 </p>;
@@ -77,15 +48,15 @@ class App extends React.Component<{}, IState> {
         }
     }
 
-    menu = () => (
+    const menu = (
         <Menu
             theme="dark"
             mode="inline"
-            defaultSelectedKeys={[this.state.currentPage]}
-            onSelect={vals => this.setState({ currentPage: vals.key })}
+            defaultSelectedKeys={[currentPage]}
+            onSelect={vals => switchPage(vals.key)}
             openKeys={['3', 'games', 'multiplayer']}
-            selectedKeys={[this.state.currentPage]}
-            onClick={this.toggle}
+            selectedKeys={[currentPage]}
+            // onClick={this.toggle}
         >
             <Item key="info">
                 <Icon type="info-circle" />
@@ -125,158 +96,106 @@ class App extends React.Component<{}, IState> {
                     <span>R-P-S</span>
                 </Item>
             </SubMenu>
-            {/* <SubMenu
-                key="multiplayer"
-                title={
-                    <span>
-                        <Icon type="team" />
-                        <span>Multiplayer</span>
-                    </span>
-                }
-            >
-                <Item key="pong_mult">
-                    <Icon type="play-circle" />
-                    <span>Pong 2P</span>
-                </Item>
-            </SubMenu> */}
         </Menu>
-    )
+    );
 
-    renderDesktop() {
-        return (
-            <Layout style={{ height: '100vh' }}>
-                <Sider
-                    collapsible={false}
-                    collapsed={this.state.collapsed}
-                    onCollapse={this.toggle}
-                    width={168}
-                >
-                    {this.menu()}
-                </Sider>
-                <Layout>
-                    <Content
-                        style={{
-                            margin: 0,
-                            // margin: this.state.currentPage === 'pong' || this.state.currentPage === 'pong_mult' ? 0 : '16px',
-                            padding: this.state.currentPage === 'pong' || this.state.currentPage === 'pong_mult' ? 0 : 24,
-                            background: '#fff',
-                            minHeight: 280,
-                        }}
-                    >
-                        {this.renderContent(this.state.currentPage)}
-                    </Content>
-                </Layout>
-            </Layout>
-        );
-    }
-
-    renderMobile() {
-        return (
-            <Layout style={{ height: '100vh' }}>
-                <Header
+    const renderDesktop = (
+        <Layout style={{ height: '100vh' }}>
+            <Sider
+                collapsible={false}
+                collapsed={false}
+                width={168}
+            >
+                {menu}
+            </Sider>
+            <Layout>
+                <Content
                     style={{
-                        height: 50,
-                        lineHeight: '50px',
-                        padding: '0px 35px'
+                        margin: 0,
+                        // margin: this.state.currentPage === 'pong' || this.state.currentPage === 'pong_mult' ? 0 : '16px',
+                        padding: currentPage === 'pong' || currentPage === 'pong_mult' ? 0 : 24,
+                        background: '#fff',
+                        minHeight: 280,
                     }}
                 >
-                    <div>
-                        <div style={{
-                            position: 'absolute',
-                            left: 0,
-                            textAlign: 'center',
-                            color: '#bfbfbf',
-                            top: 0,
-                            width: '100%',
-                        }}>
-                            <span>Emojoy</span>
-                        </div>
-                        <div style={{
-                            position: 'relative'
-                        }}>
-                            <Icon
-                                type='menu'
-                                style={{
-                                    color: 'white',
-                                    fontSize: 20,
-                                    height: '50px',
-                                }}
-                                onClick={this.toggle}
-                            />
-                        </div>
-                    </div>
-                </Header>
-                    <Layout>
-                        {
-                            this.state.siderVisible ? 
-                            <Sider
-                                collapsible={false}
-                                collapsed={this.state.collapsed}
-                                onCollapse={this.toggle}
-                                width={168}
-                                style={{zIndex: 1}}
-                            >
-                                {this.menu()}
-                            </Sider>
-                            : null
-                        }
-                        <Content
-                            style={{
-                                // margin: this.state.currentPage === 'pong' || this.state.currentPage === 'pong_mult' ? 0 : '16px',
-                                padding: this.state.currentPage === 'pong' || this.state.currentPage === 'pong_mult' ? 0 : 10,
-                                margin: 0,
-                                background: '#fff',
-                                minHeight: 280,
-                                position: 'absolute',
-                                left: 0,
-                                zIndex: 0,
-                                // top: 0,
-                            }}
-                        >
-                            {this.renderContent(this.state.currentPage)}
-                        </Content>
-                    </Layout>
+                    {renderContent()}
+                </Content>
             </Layout>
-        );
-    }
+        </Layout>
+    );
 
-    render() {
-        return this.state.mobile ? this.renderMobile() : this.renderDesktop();
-    }
+    const renderMobile = (
+        <>
+            <Header
+                style={{
+                    height: 50,
+                    lineHeight: '50px',
+                    padding: '0px 35px'
+                }}
+            >
+                <div>
+                    <div style={{
+                        position: 'absolute',
+                        left: 0,
+                        textAlign: 'center',
+                        color: '#bfbfbf',
+                        top: 0,
+                        width: '100%',
+                    }}>
+                        <span>Emojoy</span>
+                    </div>
+                    <div style={{
+                        position: 'relative'
+                    }}>
+                        <Icon
+                            type='menu'
+                            style={{
+                                color: 'white',
+                                fontSize: 20,
+                                height: '50px',
+                            }}
+                            onClick={_ => showSider(!siderVisible)}
+                        />
+                    </div>
+                </div>
+            </Header>
+            <Layout>
+                {
+                    siderVisible ? 
+                    <Sider
+                        collapsible={false}
+                        collapsed={false}
+                        onClick={_ => showSider(!siderVisible)}
+                        width={168}
+                        style={{zIndex: 1}}
+                    >
+                        {menu}
+                    </Sider>
+                    : null
+                }
+                <Content
+                    style={{
+                        padding: currentPage === 'pong' || currentPage === 'pong_mult' ? 0 : 10,
+                        margin: 0,
+                        background: '#fff',
+                        minHeight: 280,
+                        position: 'absolute',
+                        left: 0,
+                        zIndex: 0,
+                        // top: 0,
+                    }}
+                >
+                    {renderContent()}
+                </Content>
+            </Layout>
+        </>
+    );
+
+    return (
+        <Layout style={{ height: '100vh' }}>
+            {mobile ? renderMobile : renderDesktop}
+        </Layout>
+    );
 }
 
-export const emotion2emoji = (emotion: Emotion | undefined) => {
-    switch (emotion) {
-        case "neutral":
-            return "😐";
-        case "happy":
-            return "😄";
-        case "sad":
-            return "😞";
-        case "surprised":
-            return "😯";
-        case "angry":
-            return "😠";
-        case "disgusted":
-            return "🤮";
-        case "fearful":
-            return "😬";
-        default:
-            return "😐";
-    }
-}
-
-type Placement = 'topRight' | 'topLeft'
-
-export const feedbackNotification = (place?: Placement) => {
-    notification.open({
-        message: "NICE! 🙌",
-        duration: 1.5,
-        placement: place ? place : 'topRight',
-        style: {
-            backgroundColor: "lightgreen"
-        }
-    })
-}
-
-export default App;
+export default MainComponent;

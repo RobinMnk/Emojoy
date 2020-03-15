@@ -1,10 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Typography, Button, Table, Icon } from 'antd';
 import FaceAPI, { Emotion } from '../components/faceapi';
-import { emotion2emoji, feedbackNotification } from './App';
+import { emotion2emoji, feedbackNotification } from './Utils';
 const { Title } = Typography;
 
-const SCORING_TYPE : 'fixed_time' | 'fixed_rows' = 'fixed_rows';
+const SCORING_TYPE : 'fixed_time' | 'fixed_rows' = 'fixed_rows' as 'fixed_time' | 'fixed_rows';
 const MAX_NUMBER_OF_ROWS = 3;
 
 const centerStyle = {
@@ -36,57 +36,43 @@ interface IState {
     startTime?: number;
 }
 
-export class PracticeAdvanced extends React.Component<IProps, IState> {
-    constructor(props: Readonly<IProps>) {
-        super(props);
-        this.state = {
-            loading: true,
-            phase:'info',
-            emotionTable: [],
-            score: 0,
-        };
-    }
+export const PracticeAdvanced = (props: IProps) => {
 
-    setupGame() {
+    const [loading, setLoading] = useState(true);
+    const [phase, setPhase] = useState('info');
+    const [emotionTable, setTable] = useState([]);
+    const [score, setScore] = useState(0);
+    const [startTime, setStartTime] = useState(0);
+
+    const setupGame = () => {
         const emptyTable = [];
         emptyTable.push(newEntry(1));
 
-        this.setState({
-            phase: 'playing',
-            emotionTable: emptyTable,
-            startTime: Date.now()
-        });
+        setPhase('playing');
+        setTable(emptyTable);
+        setStartTime(Date.now());
     }
 
-    finishGame() {
-        let score = 0;
+    const finishGame = () => {
+        let totalScore = 0;
         if(SCORING_TYPE === 'fixed_time') {
-            const rows = this.state.emotionTable.length-1;
-            score = rows + numCorrect(this.state.emotionTable[rows])
+            const rows = emotionTable.length-1;
+            totalScore = rows + numCorrect(emotionTable[rows])
         }
 
         if(SCORING_TYPE === 'fixed_rows') {
-            const millis = Date.now() - this.state.startTime;
-            score = Math.floor(millis/1000);
+            const millis = Date.now() - startTime;
+            totalScore = Math.floor(millis/1000);
         }
 
-        this.setState({
-            phase: 'finished',
-            score: score
-        });
+        setPhase('finished');
+        setScore(totalScore);
     }
 
-    getScore = () => (
-        SCORING_TYPE === "fixed_rows" ? (
-            `Your Time: ${this.state.score} seconds`
-        ) : (
-            `Your Score: ${this.state.score} points`
-        )
-    );
-
-    emotionChange(em: Emotion) {
-        if(this.state.phase === 'playing') {
-            const table = this.state.emotionTable;
+    const emotionChange = (em: Emotion) => {
+        debugger;
+        if(phase === 'playing') {
+            const table = emotionTable;
             const currentEntry = table[table.length-1];
             
             if(currentEntry[em as string] === 'open') {
@@ -94,125 +80,120 @@ export class PracticeAdvanced extends React.Component<IProps, IState> {
                 currentEntry[em] = 'done';
                 table.push(currentEntry);
 
-                if(!this.props.mobile) {
+                if(!props.mobile) {
                     feedbackNotification('topLeft');
                 }
 
                 if(isDone(currentEntry)) {
-
                     if(table.length === MAX_NUMBER_OF_ROWS) {
-                        this.finishGame();
+                        finishGame();
                         return;
                     }
 
                     table.push(newEntry(table.length+1));
                 }
-                this.setState({
-                    emotionTable: table,
-                });
+                setTable([...table]);
             }
         }
     }
+    
+    const renderFinished = () => (
+        <>
+            <div style={{ justifyContent: 'space-around', display: 'flex' }}>
+                <Title level={4}>Finished! {formatScore(score)}</Title>
+            </div>
+            <div style={centerStyle}>
+                <Button
+                    onClick={() => setPhase('info')}
+                >Back</Button>
+                <Button
+                    type='primary'
+                    onClick={() => setupGame()}
+                >Play again</Button>
+            </div>
+        </>
+    );
 
-    renderAux() {
-        const mobile = this.props.mobile;
-        if(this.state.phase === 'info') {
+    const renderAux = () => {
+        const videoComponent = (
+            props.mobile ? (
+                <div>
+                    <FaceAPI
+                        setEmotion={em => emotionChange(em)}
+                        noCenter={true}
+                        onRunning={() => setLoading(false)}
+                    />
+                </div> ) : null
+        );
 
-            const description = (
-                <div style={{padding: 10}}>
-                    <p> Here you can practice the transitions between expressions. </p>
-                    <p> Try to form every expression from the table on the right. Once you completed every
-                        face, you advance to the next round and go again. You will play three rounds. </p>
-                    <p>Have Fun!</p>
-
-                    <div style={{ justifyContent: 'space-around', display: 'flex' }}>
-                        <Button
-                            onClick={() => this.setupGame()}
-                            type='primary'
-                            loading={this.state.loading}
-                        > 
-                            {this.state.loading ? "Loading ..." : "Start!"}
-                        </Button>
-                    </div>
-                </div>
-            );
-
+        if(phase === 'info') {
             return (
                 <div>
                     <Title>Transition Game</Title>
-                    { mobile ? (
-                            <div>
-                                <FaceAPI
-                                    setEmotion={em => this.emotionChange(em)}
-                                    noCenter={true}
-                                    onRunning={() => this.setState({ loading: false })}
-                                />
-                            </div> ) : null }
-                    { description }
+                    { videoComponent }
+                    { description(loading, setupGame) }
                 </div>
             );
         }
-        if (this.state.phase === 'playing' || this.state.phase === 'finished') {
+        if (phase === 'playing' || phase === 'finished') {
             return (
                 <div>
                     <Title>Transition Game</Title>
-                    { mobile ? (
-                            <div>
-                                <FaceAPI
-                                    setEmotion={em => this.emotionChange(em)}
-                                    noCenter={true}
-                                    onRunning={() => this.setState({ loading: false })}
-                                />
-                            </div> ) : null }
-                    <TableComponent
-                        data={this.state.emotionTable}
-                    />
-                    {this.state.phase === 'finished' ? (
-                        <>
-                            <div style={{ justifyContent: 'space-around', display: 'flex' }}>
-                                <Title level={4}>Finished! {this.getScore()}</Title>
-                            </div>
-                            <div style={centerStyle}>
-                                <Button
-                                    onClick={() => this.setState({phase: 'info'})}
-                                >Back</Button>
-                                <Button
-                                    type='primary'
-                                    onClick={() => this.setupGame()}
-                                >Play again</Button>
-                            </div>
-                        </>
+                    { videoComponent}
+                    <TableComponent data={emotionTable} />
+                    {phase === 'finished' ? (
+                        renderFinished()
                     ) : null }
                 </div>
             );
         }
     }
 
-    renderDesktop() {
-        return (
-            <div style={{width: '100%', display: 'flex'}}>
-                <div style={{flex: '0 0 65%'}}>
-                    <FaceAPI
-                        setEmotion={em => this.emotionChange(em)}
-                        noCenter={true}
-                        onRunning={() => this.setState({ loading: false })}
-                    />
-                </div>
-                <div style={{flex: '1', padding: '0 12px'}}>
-                    { this.renderAux() }
-                </div>
+    const renderDesktop = () => (
+        <div style={{width: '100%', display: 'flex'}}>
+            <div style={{flex: '0 0 65%'}}>
+                <FaceAPI
+                    setEmotion={em => emotionChange(em)}
+                    noCenter={true}
+                    onRunning={() => setLoading(false)}
+                />
             </div>
-        );
-    }
+            <div style={{flex: '1', padding: '0 12px'}}>
+                { renderAux() }
+            </div>
+        </div>
+    );
 
-    renderMobile() {
-        return this.renderAux();
-    }
-
-    render() {
-        return this.props.mobile ? this.renderMobile() : this.renderDesktop();
-    }
+    console.log("rerender!");
+    return props.mobile ? renderAux() : renderDesktop();
 }
+
+const formatScore = (score: number) => (
+    SCORING_TYPE === "fixed_rows" ? (
+        `Your Time: ${score} seconds`
+    ) : (
+        `Your Score: ${score} points`
+    )
+);
+
+const description = (loading: boolean, setup:()=>void) => (
+    <div style={{padding: 10}}>
+        <p> Here you can practice the transitions between expressions. </p>
+        <p> Try to form every expression from the table, the order does not matter. Once you completed every
+            face, you advance to the next round and go again. You will play three rounds. </p>
+        <p>Have Fun!</p>
+
+        <div style={{ justifyContent: 'space-around', display: 'flex' }}>
+            <Button
+                onClick={() => setup()}
+                type='primary'
+                loading={loading}
+            > 
+                {loading ? "Loading ..." : "Start!"}
+            </Button>
+        </div>
+    </div>
+);
 
 const isDone = (entry: Entry) => {
     let done = true;
@@ -264,17 +245,14 @@ const renderDone = (done: EmState) => (
     </div>
 )
 
-const TableComponent = (props: any) => {
-    return(
-        <Table
-            columns={columns()}
-            dataSource={props.data}
-            pagination={false}
-            size={'small'}
-            bordered={true}
-            style={{
-                minWidth: 330
-            }}
-        />
-    );
-}
+const TableComponent = (props: {data: any[]}) => 
+    <Table
+        columns={columns()}
+        dataSource={props.data}
+        pagination={false}
+        size={'small'}
+        bordered={true}
+        style={{
+            minWidth: 330
+        }}
+    />

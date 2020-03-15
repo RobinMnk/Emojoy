@@ -1,6 +1,6 @@
 import React from 'react'
 import FaceAPI, { Emotion } from "../components/faceapi";
-import { emotion2emoji, feedbackNotification } from './App';
+import { emotion2emoji, feedbackNotification } from './Utils';
 import { Row, Typography, Button } from "antd";
 const { Title } = Typography;
 

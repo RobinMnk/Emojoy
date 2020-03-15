@@ -1,5 +1,5 @@
 import React from 'react'
-import { emotion2emoji } from './App';
+import { emotion2emoji } from './Utils';
 import './Info.css';
 
 interface IProps {
