@@ -17,4 +17,4 @@ For this purpose we are developing a web app that uses face recognition and a pl
 We are grateful for any form of support!
 
 
-[Play Now](emojoy.app)
+[Play Now](https://emojoy.app/)
