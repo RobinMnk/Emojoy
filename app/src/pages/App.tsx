@@ -12,12 +12,8 @@ import { useWindowSize } from '../Utils';
 const { Sider, Content, Header, Footer } = Layout;
 const { SubMenu, Item } = Menu;
 
-interface IProps {
+const MainComponent = () => {
 
-}
-
-const MainComponent = (props: IProps) => {
-    
     const [mobile, setMobile] = useState(window.innerWidth < 768);
     const [currentPage, switchPage] = useState('info');
     const [siderVisible, showSider] = useState(false);
@@ -56,7 +52,7 @@ const MainComponent = (props: IProps) => {
             onSelect={vals => switchPage(vals.key)}
             openKeys={['3', 'games', 'multiplayer']}
             selectedKeys={[currentPage]}
-            // onClick={this.toggle}
+        // onClick={this.toggle}
         >
             <Item key="info">
                 <Icon type="info-circle" />
@@ -113,7 +109,7 @@ const MainComponent = (props: IProps) => {
                     style={{
                         margin: 0,
                         // margin: this.state.currentPage === 'pong' || this.state.currentPage === 'pong_mult' ? 0 : '16px',
-                        padding: currentPage === 'pong' || currentPage === 'pong_mult' ? 0 : 24,
+                        padding: ['pong', 'pong_mult', 'info'].includes(currentPage) ? 0 : 24,
                         background: '#fff',
                         minHeight: 280,
                     }}
@@ -161,17 +157,17 @@ const MainComponent = (props: IProps) => {
             </Header>
             <Layout>
                 {
-                    siderVisible ? 
-                    <Sider
-                        collapsible={false}
-                        collapsed={false}
-                        onClick={_ => showSider(!siderVisible)}
-                        width={168}
-                        style={{zIndex: 1}}
-                    >
-                        {menu}
-                    </Sider>
-                    : null
+                    siderVisible ?
+                        <Sider
+                            collapsible={false}
+                            collapsed={false}
+                            onClick={_ => showSider(!siderVisible)}
+                            width={168}
+                            style={{ zIndex: 1 }}
+                        >
+                            {menu}
+                        </Sider>
+                        : null
                 }
                 <Content
                     style={{
@@ -199,12 +195,14 @@ const MainComponent = (props: IProps) => {
 }
 
 export function AppFooter() {
-    return <Footer style={{ textAlign: 'center' }}>
-      Emojoy ©2020
-      <Button type='link' icon='coffee' href='https://www.buymeacoffee.com/emojoy' />
-      <Button type='link' icon='github' href='https://github.com/RobinMnk/Emojoy' />
-      <Button type='link' icon='mail' href='mailto:emojoyapp@gmail.com' />
-    </Footer>
-  }
+    return (
+        <Footer style={{ textAlign: 'center' }}>
+            <span>Emojoy ©2020</span>
+            <Button type='link' icon='coffee' href='https://www.buymeacoffee.com/emojoy' />
+            <Button type='link' icon='github' href='https://github.com/RobinMnk/Emojoy' />
+            <Button type='link' icon='mail' href='mailto:emojoyapp@gmail.com' />
+        </Footer>
+    );
+}
 
 export default MainComponent;
